@@ -1,0 +1,51 @@
+package com.agendador.api_agendador.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name = "tb_patients")
+public class Patient implements Serializable {
+
+    @Id
+    private Long id;
+
+    @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user;
+
+    @Column(unique = true, nullable = false, name = "medical_record_number")
+    private String medicalRecordNumber;
+
+    @Column(nullable = false, name = "birth_date")
+    private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Appointment> appointments = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return Objects.equals(id, patient.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+}
