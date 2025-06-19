@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserRequestDTO(
+public record UserCreateDTO(
         @NotBlank(message = "Name cannot be empty")
         @Size(max = 150, message = "Name must be at most 150 characters long")
         String name,
