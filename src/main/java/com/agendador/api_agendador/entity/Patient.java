@@ -28,8 +28,8 @@ public class Patient implements Serializable {
     @JoinColumn(name = "id")
     private User user;
 
-    @Column(unique = true, nullable = false, name = "medical_record_number")
-    private String medicalRecordNumber;
+    @Column(unique = true, nullable = false)
+    private String cpf;
 
     @Column(nullable = false, name = "birth_date")
     private LocalDate birthDate;
