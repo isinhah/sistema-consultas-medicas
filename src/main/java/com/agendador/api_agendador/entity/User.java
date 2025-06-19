@@ -30,9 +30,9 @@ public class User implements Serializable {
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
-    private String phone;
-    @Column(nullable = false)
     private String password;
+    @Column(unique = true, nullable = false)
+    private String phone;
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
