@@ -21,6 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> findUser(@PathVariable Long id) {
+        UserResponseDTO user = userService.findUser(id);
+        return new ResponseEntity<>(user,  HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Page<UserResponseDTO>> findAll(Pageable pageable) {
         Page<UserResponseDTO> users = userService.findAll(pageable);

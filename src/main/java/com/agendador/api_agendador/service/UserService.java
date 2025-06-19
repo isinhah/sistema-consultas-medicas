@@ -25,6 +25,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public UserResponseDTO findUser(Long id) {
+        User user = findById(id);
+        return UserMapper.INSTANCE.toDto(user);
+    }
+
+    @Transactional(readOnly = true)
     public Page<UserResponseDTO> findAll(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(UserMapper.INSTANCE::toDto);
@@ -64,6 +70,8 @@ public class UserService {
         }
 
         User user = UserMapper.INSTANCE.toEntity(dto);
+        user.setRole(Role.USER);
+
         userRepository.save(user);
 
         return UserMapper.INSTANCE.toDto(user);

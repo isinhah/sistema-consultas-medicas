@@ -21,9 +21,6 @@ public record UserCreateDTO(
 
         @NotBlank(message = "Phone cannot be empty")
         @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number format is invalid")
-        String phone,
-
-        @NotBlank(message = "Role cannot be empty")
-        String role
+        String phone
 ) {
 }

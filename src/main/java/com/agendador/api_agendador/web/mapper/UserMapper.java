@@ -19,9 +19,10 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(source = "role", target = "role", qualifiedByName = "mapStringToRole")
+    @Mapping(target = "role", ignore = true)
     User toEntity(UserCreateDTO dto);
 
+    @Mapping(source = "role", target = "role", qualifiedByName = "roleToString")
     UserResponseDTO toDto(User user);
 
     @Mapping(target = "id", ignore = true)
@@ -31,8 +32,8 @@ public interface UserMapper {
     @Mapping(target = "updatedAt", ignore = true)
     void updateDto(UserUpdateDTO dto, @MappingTarget User user);
 
-    @Named("mapStringToRole")
-    default Role mapStringToRole(String role) {
-        return Role.fromString(role);
+    @Named("roleToString")
+    default String roleToString(Role role) {
+        return role != null ? role.name() : null;
     }
 }
