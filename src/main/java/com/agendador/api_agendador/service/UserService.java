@@ -6,8 +6,10 @@ import com.agendador.api_agendador.repository.UserRepository;
 import com.agendador.api_agendador.web.dto.UserCreateDTO;
 import com.agendador.api_agendador.web.dto.UserResponseDTO;
 import com.agendador.api_agendador.web.dto.UserUpdateDTO;
+import com.agendador.api_agendador.web.exception.InvalidUserDataException;
+import com.agendador.api_agendador.web.exception.UserAlreadyExistsException;
+import com.agendador.api_agendador.web.exception.UserNotFoundException;
 import com.agendador.api_agendador.web.mapper.UserMapper;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,11 +46,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDTO findByEmailOrPhone(String email, String phone) {
         if ((email == null || email.isEmpty()) && (phone == null || phone.isEmpty())) {
-            throw new IllegalArgumentException("You must provide at least an email or a phone number");
+            throw new InvalidUserDataException("You must provide at least an email or a phone number");
         }
 
         User user = userRepository.findByEmailOrPhone(email, phone)
-                .orElseThrow(() -> new EntityNotFoundException(
+                .orElseThrow(() -> new UserNotFoundException(
                         String.format("No user found with email [%s] or phone [%s]", email, phone)
                 ));
 
@@ -58,7 +60,7 @@ public class UserService {
     @Transactional
     public UserResponseDTO create(UserCreateDTO dto) {
         if (userRepository.findByEmailOrPhone(dto.email(), dto.phone()).isPresent()) {
-            throw new IllegalStateException("Email or phone already in use");
+            throw new UserAlreadyExistsException("Email or phone already in use");
         }
 
         User user = UserMapper.INSTANCE.toEntity(dto);
@@ -72,10 +74,10 @@ public class UserService {
         User user = findById(id);
 
         if (userRepository.existsByEmailAndIdNot(dto.email(), id)) {
-            throw new IllegalStateException("Email already in use");
+            throw new UserAlreadyExistsException("Email already in use");
         }
         if (userRepository.existsByPhoneAndIdNot(dto.phone(), id)) {
-            throw new IllegalStateException("Phone already in use");
+            throw new UserAlreadyExistsException("Phone already in use");
         }
 
         UserMapper.INSTANCE.updateDto(dto, user);
@@ -93,7 +95,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("User not found with id: " + id)
+                () -> new UserNotFoundException("User not found with id: " + id)
         );
     }
 }
