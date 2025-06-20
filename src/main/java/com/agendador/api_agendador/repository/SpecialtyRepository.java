@@ -14,5 +14,4 @@ public interface SpecialtyRepository extends JpaRepository<Specialty, Long> {
     Page<Specialty> findByDoctorsCrm(String crm, Pageable pageable);
 
     boolean existsByName(String name);
-    boolean existsByNameAndIdNot(String name, Long id);
 }

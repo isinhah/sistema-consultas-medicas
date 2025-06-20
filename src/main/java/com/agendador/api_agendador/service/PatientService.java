@@ -57,8 +57,8 @@ public class PatientService {
         User existingUser = userRepository.findById(dto.userId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.userId()));
 
-        if (patientRepository.existsById(existingUser.getId())) {
-            throw new ResourceAlreadyExistsException("User is already registered as a patient");
+        if (existingUser.getDoctor() != null || existingUser.getPatient() != null || existingUser.getReceptionist() != null) {
+            throw new ResourceAlreadyExistsException("User already has a profile assigned");
         }
         if (patientRepository.existsByCpf(dto.cpf())) {
             throw new ResourceAlreadyExistsException("CPF already in use");
@@ -85,6 +85,8 @@ public class PatientService {
         }
 
         PatientMapper.INSTANCE.updateDto(dto, patient);
+
+        patient.setUser(patient.getUser());
 
         Patient updatedPatient = patientRepository.save(patient);
         return PatientMapper.INSTANCE.toDto(updatedPatient);

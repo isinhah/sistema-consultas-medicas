@@ -80,20 +80,6 @@ public class SpecialtyService {
     }
 
     @Transactional
-    public SpecialtyResponseDTO update(Long id, SpecialtyCreateDTO dto) {
-        Specialty specialty = findEntityById(id);
-
-        if (specialtyRepository.existsByNameAndIdNot(dto.name(), id)) {
-            throw new ResourceAlreadyExistsException("Specialty with this name already exists");
-        }
-
-        SpecialtyMapper.INSTANCE.updateDto(dto, specialty);
-        Specialty updatedSpecialty =  specialtyRepository.save(specialty);
-
-        return SpecialtyMapper.INSTANCE.toDto(updatedSpecialty);
-    }
-
-    @Transactional
     public void delete(Long id) {
         Specialty specialty = findEntityById(id);
         specialtyRepository.delete(specialty);

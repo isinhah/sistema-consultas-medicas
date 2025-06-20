@@ -56,12 +56,6 @@ public class SpecialtyController {
         return new ResponseEntity<>(specialty,  HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SpecialtyResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SpecialtyCreateDTO dto) {
-        SpecialtyResponseDTO specialty = specialtyService.update(id, dto);
-        return new ResponseEntity<>(specialty, HttpStatus.OK);
-    }
-
     @DeleteMapping("/{id}")
     public  ResponseEntity<Void> delete(@PathVariable Long id) {
         specialtyService.delete(id);

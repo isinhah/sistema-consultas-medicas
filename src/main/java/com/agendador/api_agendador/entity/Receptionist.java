@@ -1,5 +1,6 @@
 package com.agendador.api_agendador.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Receptionist implements Serializable {
     @OneToOne(optional = false)
     @MapsId
     @JoinColumn(name = "id")
+    @JsonBackReference
     private User user;
 
     @Column(unique = true, nullable = false, name = "registration_number")
