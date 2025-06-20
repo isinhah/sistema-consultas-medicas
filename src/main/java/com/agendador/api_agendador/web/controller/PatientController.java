@@ -4,6 +4,7 @@ import com.agendador.api_agendador.service.PatientService;
 import com.agendador.api_agendador.web.dto.PatientCreateDTO;
 import com.agendador.api_agendador.web.dto.PatientResponseDTO;
 import com.agendador.api_agendador.web.dto.PatientUpdateDTO;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -39,13 +40,13 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<PatientResponseDTO> create(@RequestBody PatientCreateDTO dto) {
+    public ResponseEntity<PatientResponseDTO> create(@Valid @RequestBody PatientCreateDTO dto) {
         PatientResponseDTO patient = patientService.create(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(patient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> update(@PathVariable Long id, @RequestBody PatientUpdateDTO dto) {
+    public ResponseEntity<PatientResponseDTO> update(@PathVariable Long id, @Valid @RequestBody PatientUpdateDTO dto) {
         PatientResponseDTO patient = patientService.update(id, dto);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }

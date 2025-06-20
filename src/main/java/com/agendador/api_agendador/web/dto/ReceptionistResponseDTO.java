@@ -1,15 +1,14 @@
 package com.agendador.api_agendador.web.dto;
 
 import java.time.LocalDate;
-import java.util.Set;
 
-public record DoctorResponseDTO(
+public record ReceptionistResponseDTO(
         Long id,
         String name,
-        String crm,
+        String registrationNumber,
         String email,
         String phone,
         LocalDate birthDate,
-        String role,
-        Set<Long> specialtyIds
-) {}
+        String role
+) {
+}

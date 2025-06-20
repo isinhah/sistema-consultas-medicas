@@ -47,7 +47,7 @@ public class PatientService {
         }
 
         Patient patient = patientRepository.findByCpf(cpf)
-                .orElseThrow(() -> new ResourceNotFoundException("No user found with CPF:" + cpf));
+                .orElseThrow(() -> new ResourceNotFoundException("No patient found with CPF:" + cpf));
 
         return PatientMapper.INSTANCE.toDto(patient);
     }
@@ -55,7 +55,7 @@ public class PatientService {
     @Transactional
     public PatientResponseDTO create(PatientCreateDTO dto) {
         User existingUser = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + dto.userId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + dto.userId()));
 
         if (existingUser.getDoctor() != null || existingUser.getPatient() != null || existingUser.getReceptionist() != null) {
             throw new ResourceAlreadyExistsException("User already has a profile assigned");
