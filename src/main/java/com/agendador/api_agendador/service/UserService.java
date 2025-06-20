@@ -6,9 +6,9 @@ import com.agendador.api_agendador.repository.UserRepository;
 import com.agendador.api_agendador.web.dto.UserCreateDTO;
 import com.agendador.api_agendador.web.dto.UserResponseDTO;
 import com.agendador.api_agendador.web.dto.UserUpdateDTO;
-import com.agendador.api_agendador.web.exception.InvalidUserDataException;
-import com.agendador.api_agendador.web.exception.UserAlreadyExistsException;
-import com.agendador.api_agendador.web.exception.UserNotFoundException;
+import com.agendador.api_agendador.web.exception.BadRequestException;
+import com.agendador.api_agendador.web.exception.ResourceAlreadyExistsException;
+import com.agendador.api_agendador.web.exception.ResourceNotFoundException;
 import com.agendador.api_agendador.web.mapper.UserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +25,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserResponseDTO findUser(Long id) {
-        User user = findById(id);
+    public UserResponseDTO findById(Long id) {
+        User user = findEntityById(id);
         return UserMapper.INSTANCE.toDto(user);
     }
 
@@ -38,6 +38,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserResponseDTO> findByName(String name, Pageable pageable) {
+        if (name == null || name.isBlank()) {
+            throw new BadRequestException("Name must be provided");
+        }
+
         return userRepository.findByNameIgnoreCase(name, pageable)
                 .map(UserMapper.INSTANCE::toDto);
     }
@@ -52,11 +56,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserResponseDTO findByEmailOrPhone(String email, String phone) {
         if ((email == null || email.isEmpty()) && (phone == null || phone.isEmpty())) {
-            throw new InvalidUserDataException("You must provide at least an email or a phone number");
+            throw new BadRequestException("You must provide at least an email or a phone number");
         }
 
         User user = userRepository.findByEmailOrPhone(email, phone)
-                .orElseThrow(() -> new UserNotFoundException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("No user found with email [%s] or phone [%s]", email, phone)
                 ));
 
@@ -65,8 +69,8 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO create(UserCreateDTO dto) {
-        if (userRepository.findByEmailOrPhone(dto.email(), dto.phone()).isPresent()) {
-            throw new UserAlreadyExistsException("Email or phone already in use");
+        if (userRepository.existsByEmailOrPhone(dto.email(), dto.phone())) {
+            throw new ResourceAlreadyExistsException("Email or phone already in use");
         }
 
         User user = UserMapper.INSTANCE.toEntity(dto);
@@ -79,13 +83,13 @@ public class UserService {
 
     @Transactional
     public UserResponseDTO update(Long id, UserUpdateDTO dto) {
-        User user = findById(id);
+        User user = findEntityById(id);
 
         if (userRepository.existsByEmailAndIdNot(dto.email(), id)) {
-            throw new UserAlreadyExistsException("Email already in use");
+            throw new ResourceAlreadyExistsException("Email already in use");
         }
         if (userRepository.existsByPhoneAndIdNot(dto.phone(), id)) {
-            throw new UserAlreadyExistsException("Phone already in use");
+            throw new ResourceAlreadyExistsException("Phone already in use");
         }
 
         UserMapper.INSTANCE.updateDto(dto, user);
@@ -96,14 +100,14 @@ public class UserService {
 
     @Transactional
     public void delete(Long id) {
-        User user = findById(id);
+        User user = findEntityById(id);
         userRepository.delete(user);
     }
 
     @Transactional(readOnly = true)
-    public User findById(Long id) {
+    public User findEntityById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException("User not found with id: " + id)
+                () -> new ResourceNotFoundException("User not found with id: " + id)
         );
     }
 }

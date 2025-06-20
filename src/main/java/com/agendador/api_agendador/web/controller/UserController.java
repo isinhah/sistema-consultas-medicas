@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> findUser(@PathVariable Long id) {
-        UserResponseDTO user = userService.findUser(id);
+        UserResponseDTO user = userService.findById(id);
         return new ResponseEntity<>(user,  HttpStatus.OK);
     }
 
@@ -46,8 +46,9 @@ public class UserController {
     }
 
     @GetMapping("/by-contact")
-    public ResponseEntity<UserResponseDTO> findByEmailOrPhone(@RequestParam(required = false) String email,
-                                              @RequestParam(required = false) String phone
+    public ResponseEntity<UserResponseDTO> findByEmailOrPhone(
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String phone
     ) {
         UserResponseDTO user = userService.findByEmailOrPhone(email, phone);
         return new ResponseEntity<>(user, HttpStatus.OK);

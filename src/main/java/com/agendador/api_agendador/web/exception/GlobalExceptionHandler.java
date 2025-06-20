@@ -15,8 +15,47 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleResourceNotFoundException(ResourceNotFoundException ex,
+                                                                        HttpServletRequest request) {
+        log.error("********** API ERROR **********", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(
+                        request,
+                        HttpStatus.NOT_FOUND,
+                        ex.getMessage()));
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex,
+                                                                             HttpServletRequest request) {
+        log.error("********** API ERROR **********", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(
+                        request,
+                        HttpStatus.CONFLICT,
+                        ex.getMessage()));
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorMessage> handleBadRequestException(BadRequestException ex,
+                                                                  HttpServletRequest request) {
+        log.error("********** API ERROR **********", ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(
+                        request,
+                        HttpStatus.BAD_REQUEST,
+                        ex.getMessage()));
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorMessage> entityNotFoundException(RuntimeException ex,
+    public ResponseEntity<ErrorMessage> handleEntityNotFoundException(RuntimeException ex,
                                                                 HttpServletRequest request) {
         log.error("********** API ERROR **********", ex);
         return ResponseEntity
@@ -29,7 +68,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorMessage> illegalArgumentException(IllegalArgumentException ex,
+    public ResponseEntity<ErrorMessage> handleIllegalArgumentException(IllegalArgumentException ex,
                                                                  HttpServletRequest request) {
         log.error("********** API ERROR **********", ex);
         return ResponseEntity
@@ -42,7 +81,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex,
+    public ResponseEntity<ErrorMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex,
                                                                         HttpServletRequest request,
                                                                         BindingResult result) {
         log.error("********** API ERROR **********", ex);

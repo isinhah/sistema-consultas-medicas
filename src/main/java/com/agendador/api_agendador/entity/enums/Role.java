@@ -1,5 +1,7 @@
 package com.agendador.api_agendador.entity.enums;
 
+import com.agendador.api_agendador.web.exception.BadRequestException;
+
 public enum Role {
     USER,
     DOCTOR,
@@ -10,8 +12,8 @@ public enum Role {
     public static Role fromString(String role) {
         try {
             return Role.valueOf(role.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid role: " + role);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Invalid role: " + role);
         }
     }
 }
