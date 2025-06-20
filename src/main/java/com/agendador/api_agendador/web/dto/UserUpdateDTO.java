@@ -1,9 +1,8 @@
 package com.agendador.api_agendador.web.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
+import java.time.LocalDate;
 
 public record UserUpdateDTO(
         @NotBlank(message = "Name cannot be empty")
@@ -17,6 +16,10 @@ public record UserUpdateDTO(
 
         @NotBlank(message = "Phone cannot be empty")
         @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$")
-        String phone
+        String phone,
+
+        @NotNull(message = "Birth date cannot be null")
+        @Past(message = "Birth date must be in the past")
+        LocalDate birthDate
 ) {
 }

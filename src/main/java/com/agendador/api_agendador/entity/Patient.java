@@ -31,9 +31,6 @@ public class Patient implements Serializable {
     @Column(unique = true, nullable = false)
     private String cpf;
 
-    @Column(nullable = false, name = "birth_date")
-    private LocalDate birthDate;
-
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Appointment> appointments = new HashSet<>();
 

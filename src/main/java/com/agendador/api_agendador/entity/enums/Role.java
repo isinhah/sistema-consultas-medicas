@@ -1,6 +1,7 @@
 package com.agendador.api_agendador.entity.enums;
 
 public enum Role {
+    USER,
     DOCTOR,
     RECEPTIONIST,
     PATIENT,

@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -33,6 +34,8 @@ public class User implements Serializable {
     private String password;
     @Column(unique = true, nullable = false)
     private String phone;
+    @Column(nullable = false, name = "birth_date")
+    private LocalDate birthDate;
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
