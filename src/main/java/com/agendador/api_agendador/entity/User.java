@@ -47,7 +47,13 @@ public class User implements Serializable {
     @Column(nullable = false)
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user")
+    private Doctor doctor;
+
+    @OneToOne(mappedBy = "user")
+    private Receptionist receptionist;
+
+    @OneToOne(mappedBy = "user")
     private Patient patient;
 
     @Override
