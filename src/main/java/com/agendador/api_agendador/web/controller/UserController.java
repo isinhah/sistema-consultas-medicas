@@ -22,27 +22,27 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> findUser(@PathVariable Long id) {
-        UserResponseDTO user = userService.findById(id);
-        return new ResponseEntity<>(user,  HttpStatus.OK);
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        UserResponseDTO dto = userService.findById(id);
+        return new ResponseEntity<>(dto,  HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<Page<UserResponseDTO>> findAll(Pageable pageable) {
-        Page<UserResponseDTO> users = userService.findAll(pageable);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        Page<UserResponseDTO> page = userService.findAll(pageable);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/search")
     public ResponseEntity<Page<UserResponseDTO>> findByName(@RequestParam String name, Pageable pageable) {
-        Page<UserResponseDTO> users = userService.findByName(name, pageable);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        Page<UserResponseDTO> page = userService.findByName(name, pageable);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/role")
     public ResponseEntity<Page<UserResponseDTO>> findByRole(@RequestParam String role, Pageable pageable) {
-        Page<UserResponseDTO> users = userService.findByRole(role, pageable);
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        Page<UserResponseDTO> page = userService.findByRole(role, pageable);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @GetMapping("/by-contact")
@@ -50,8 +50,8 @@ public class UserController {
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String phone
     ) {
-        UserResponseDTO user = userService.findByEmailOrPhone(email, phone);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserResponseDTO dto = userService.findByEmailOrPhone(email, phone);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PostMapping
@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -48,6 +48,10 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Page<UserResponseDTO> findByRole(String roleString, Pageable pageable) {
+        if (roleString == null || roleString.isBlank()) {
+            throw new BadRequestException("Role must be provided");
+        }
+
         Role role = Role.fromString(roleString);
         Page<User> users = userRepository.findByRole(role, pageable);
         return users.map(UserMapper.INSTANCE::toDto);
