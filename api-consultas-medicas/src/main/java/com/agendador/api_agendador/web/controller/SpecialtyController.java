@@ -57,7 +57,7 @@ public class SpecialtyController {
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         specialtyService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

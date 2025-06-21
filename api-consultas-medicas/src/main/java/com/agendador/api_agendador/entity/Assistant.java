@@ -15,7 +15,7 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_receptionists")
+@Table(name = "tb_assistants")
 public class Assistant implements Serializable {
 
     @Id
