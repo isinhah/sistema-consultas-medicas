@@ -1,4 +1,4 @@
-package com.agendador.api_agendador.web.dto;
+package com.agendador.api_agendador.web.dto.specialty;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

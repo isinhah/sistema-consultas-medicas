@@ -1,10 +1,7 @@
-package com.agendador.api_agendador.web.mapper;
+package com.agendador.api_agendador.web.dto.assistant;
 
 import com.agendador.api_agendador.entity.Assistant;
 import com.agendador.api_agendador.entity.enums.Role;
-import com.agendador.api_agendador.web.dto.AssistantCreateDTO;
-import com.agendador.api_agendador.web.dto.AssistantResponseDTO;
-import com.agendador.api_agendador.web.dto.AssistantUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

@@ -1,7 +1,6 @@
-package com.agendador.api_agendador.web.dto;
+package com.agendador.api_agendador.web.dto.doctor_schedule;
 
 import com.agendador.api_agendador.entity.enums.DayOfWeek;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalTime;
 import java.util.Set;
@@ -9,7 +8,7 @@ import java.util.UUID;
 
 public record DoctorScheduleResponseDTO(
         Long id,
-        Long doctorId,
+        String doctorName,
         DayOfWeek dayOfWeek,
         LocalTime startTime,
         LocalTime endTime,

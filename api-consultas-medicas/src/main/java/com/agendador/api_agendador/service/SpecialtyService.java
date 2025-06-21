@@ -2,12 +2,12 @@ package com.agendador.api_agendador.service;
 
 import com.agendador.api_agendador.entity.Specialty;
 import com.agendador.api_agendador.repository.SpecialtyRepository;
-import com.agendador.api_agendador.web.dto.SpecialtyCreateDTO;
-import com.agendador.api_agendador.web.dto.SpecialtyResponseDTO;
+import com.agendador.api_agendador.web.dto.specialty.SpecialtyCreateDTO;
+import com.agendador.api_agendador.web.dto.specialty.SpecialtyResponseDTO;
 import com.agendador.api_agendador.web.exception.BadRequestException;
 import com.agendador.api_agendador.web.exception.ResourceAlreadyExistsException;
 import com.agendador.api_agendador.web.exception.ResourceNotFoundException;
-import com.agendador.api_agendador.web.mapper.SpecialtyMapper;
+import com.agendador.api_agendador.web.dto.specialty.SpecialtyMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

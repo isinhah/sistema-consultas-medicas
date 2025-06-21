@@ -1,8 +1,8 @@
 package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.service.SpecialtyService;
-import com.agendador.api_agendador.web.dto.SpecialtyCreateDTO;
-import com.agendador.api_agendador.web.dto.SpecialtyResponseDTO;
+import com.agendador.api_agendador.web.dto.specialty.SpecialtyCreateDTO;
+import com.agendador.api_agendador.web.dto.specialty.SpecialtyResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

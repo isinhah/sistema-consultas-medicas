@@ -1,11 +1,8 @@
-package com.agendador.api_agendador.web.mapper;
+package com.agendador.api_agendador.web.dto.doctor;
 
 import com.agendador.api_agendador.entity.Doctor;
 import com.agendador.api_agendador.entity.Specialty;
 import com.agendador.api_agendador.entity.enums.Role;
-import com.agendador.api_agendador.web.dto.DoctorCreateDTO;
-import com.agendador.api_agendador.web.dto.DoctorResponseDTO;
-import com.agendador.api_agendador.web.dto.DoctorUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

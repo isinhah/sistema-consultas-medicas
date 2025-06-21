@@ -1,10 +1,7 @@
-package com.agendador.api_agendador.web.mapper;
+package com.agendador.api_agendador.web.dto.user;
 
 import com.agendador.api_agendador.entity.User;
 import com.agendador.api_agendador.entity.enums.Role;
-import com.agendador.api_agendador.web.dto.UserCreateDTO;
-import com.agendador.api_agendador.web.dto.UserResponseDTO;
-import com.agendador.api_agendador.web.dto.UserUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

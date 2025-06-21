@@ -1,11 +1,11 @@
-package com.agendador.api_agendador.web.dto;
+package com.agendador.api_agendador.web.dto.assistant;
 
 import java.time.LocalDate;
 
-public record PatientResponseDTO(
+public record AssistantResponseDTO(
         Long id,
         String name,
-        String cpf,
+        String registrationNumber,
         String email,
         String phone,
         LocalDate birthDate,

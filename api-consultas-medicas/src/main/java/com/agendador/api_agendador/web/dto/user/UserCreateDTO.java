@@ -1,12 +1,12 @@
-package com.agendador.api_agendador.web.dto;
+package com.agendador.api_agendador.web.dto.user;
 
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-public record UserUpdateDTO(
+public record UserCreateDTO(
         @NotBlank(message = "Name cannot be empty")
-        @Size(max = 150)
+        @Size(max = 150, message = "Name must be at most 150 characters long")
         String name,
 
         @NotBlank(message = "Email cannot be empty")
@@ -14,8 +14,12 @@ public record UserUpdateDTO(
         @Size(max = 100, message = "Email must be at most 100 characters long")
         String email,
 
+        @NotBlank(message = "Password cannot be empty")
+        @Size(min = 8, max = 8, message = "Password size must be exactly 8 characters")
+        String password,
+
         @NotBlank(message = "Phone cannot be empty")
-        @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$")
+        @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number format is invalid")
         String phone,
 
         @NotNull(message = "Birth date cannot be null")

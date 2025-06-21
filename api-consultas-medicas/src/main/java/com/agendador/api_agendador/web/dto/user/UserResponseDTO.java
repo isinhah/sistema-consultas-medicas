@@ -1,4 +1,4 @@
-package com.agendador.api_agendador.web.dto;
+package com.agendador.api_agendador.web.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

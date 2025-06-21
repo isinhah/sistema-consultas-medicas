@@ -1,8 +1,6 @@
-package com.agendador.api_agendador.web.mapper;
+package com.agendador.api_agendador.web.dto.specialty;
 
 import com.agendador.api_agendador.entity.Specialty;
-import com.agendador.api_agendador.web.dto.SpecialtyCreateDTO;
-import com.agendador.api_agendador.web.dto.SpecialtyResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

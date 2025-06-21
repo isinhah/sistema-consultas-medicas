@@ -2,9 +2,9 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.entity.enums.DayOfWeek;
 import com.agendador.api_agendador.service.DoctorScheduleService;
-import com.agendador.api_agendador.web.dto.DoctorScheduleCreateDTO;
-import com.agendador.api_agendador.web.dto.DoctorScheduleResponseDTO;
-import com.agendador.api_agendador.web.dto.DoctorScheduleUpdateDTO;
+import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleCreateDTO;
+import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleResponseDTO;
+import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleUpdateDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
