@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.backend</groupId>
-    <artifactId>agendador-consultas-medicas</artifactId>
+    <artifactId>api-consultas-medicas</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>agendador-consultas-medicas</name>
-    <description>agendador-consultas-medicas</description>
+    <name>api-consultas-medicas</name>
+    <description>API para gerenciamento de consultas médicas</description>
     <url/>
     <licenses>
         <license/>

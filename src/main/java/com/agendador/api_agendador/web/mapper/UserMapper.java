@@ -22,7 +22,7 @@ public interface UserMapper {
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "doctor", ignore = true)
-    @Mapping(target = "receptionist", ignore = true)
+    @Mapping(target = "assistant", ignore = true)
     User toEntity(UserCreateDTO dto);
 
     @Mapping(source = "role", target = "role", qualifiedByName = "roleToString")
@@ -35,7 +35,7 @@ public interface UserMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "patient", ignore = true)
     @Mapping(target = "doctor", ignore = true)
-    @Mapping(target = "receptionist", ignore = true)
+    @Mapping(target = "assistant", ignore = true)
     void updateDto(UserUpdateDTO dto, @MappingTarget User user);
 
     @Named("roleToString")
