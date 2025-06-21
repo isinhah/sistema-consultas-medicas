@@ -5,7 +5,7 @@ import com.agendador.api_agendador.web.exception.BadRequestException;
 public enum Role {
     USER,
     DOCTOR,
-    RECEPTIONIST,
+    ASSISTANT,
     PATIENT,
     ADMIN;
 

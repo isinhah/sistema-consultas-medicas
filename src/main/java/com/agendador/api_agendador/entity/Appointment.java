@@ -32,7 +32,7 @@ public class Appointment implements Serializable {
     private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Receptionist receptionist;
+    private Assistant assistant;
 
     @ManyToOne(optional = false)
     private DoctorSchedule doctorSchedule;

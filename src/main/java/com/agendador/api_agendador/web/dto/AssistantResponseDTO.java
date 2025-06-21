@@ -2,7 +2,7 @@ package com.agendador.api_agendador.web.dto;
 
 import java.time.LocalDate;
 
-public record ReceptionistResponseDTO(
+public record AssistantResponseDTO(
         Long id,
         String name,
         String registrationNumber,

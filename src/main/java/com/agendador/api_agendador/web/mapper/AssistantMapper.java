@@ -1,10 +1,10 @@
 package com.agendador.api_agendador.web.mapper;
 
-import com.agendador.api_agendador.entity.Receptionist;
+import com.agendador.api_agendador.entity.Assistant;
 import com.agendador.api_agendador.entity.enums.Role;
-import com.agendador.api_agendador.web.dto.ReceptionistCreateDTO;
-import com.agendador.api_agendador.web.dto.ReceptionistResponseDTO;
-import com.agendador.api_agendador.web.dto.ReceptionistUpdateDTO;
+import com.agendador.api_agendador.web.dto.AssistantCreateDTO;
+import com.agendador.api_agendador.web.dto.AssistantResponseDTO;
+import com.agendador.api_agendador.web.dto.AssistantUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -12,14 +12,14 @@ import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface ReceptionistMapper {
+public interface AssistantMapper {
 
-    ReceptionistMapper INSTANCE = Mappers.getMapper(ReceptionistMapper.class);
+    AssistantMapper INSTANCE = Mappers.getMapper(AssistantMapper.class);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "confirmedAppointments", ignore = true)
-    Receptionist toEntity(ReceptionistCreateDTO dto);
+    Assistant toEntity(AssistantCreateDTO dto);
 
     @Mapping(target = "id", source = "user.id")
     @Mapping(target = "name", source = "user.name")
@@ -28,12 +28,12 @@ public interface ReceptionistMapper {
     @Mapping(target = "phone", source = "user.phone")
     @Mapping(target = "birthDate", source = "user.birthDate")
     @Mapping(target = "role", source = "user.role", qualifiedByName = "roleToString")
-    ReceptionistResponseDTO toDto(Receptionist receptionist);
+    AssistantResponseDTO toDto(Assistant assistant);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "confirmedAppointments", ignore = true)
-    void updateDto(ReceptionistUpdateDTO dto, @MappingTarget Receptionist receptionist);
+    void updateDto(AssistantUpdateDTO dto, @MappingTarget Assistant assistant);
 
     @Named("roleToString")
     default String roleToString(Role role) {

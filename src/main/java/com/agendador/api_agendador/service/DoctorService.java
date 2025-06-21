@@ -64,7 +64,7 @@ public class DoctorService {
         User existingUser = userRepository.findById(dto.userId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + dto.userId()));
 
-        if (existingUser.getDoctor() != null || existingUser.getPatient() != null || existingUser.getReceptionist() != null) {
+        if (existingUser.getDoctor() != null || existingUser.getPatient() != null || existingUser.getAssistant() != null) {
             throw new ResourceAlreadyExistsException("User already has a profile assigned");
         }
         if (doctorRepository.existsByCrm(dto.crm())) {

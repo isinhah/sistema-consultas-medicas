@@ -16,7 +16,7 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "tb_receptionists")
-public class Receptionist implements Serializable {
+public class Assistant implements Serializable {
 
     @Id
     private Long id;
@@ -30,13 +30,13 @@ public class Receptionist implements Serializable {
     @Column(unique = true, nullable = false, name = "registration_number")
     private String registrationNumber;
 
-    @OneToMany(mappedBy = "receptionist", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "assistant", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Appointment> confirmedAppointments = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Receptionist that = (Receptionist) o;
+        Assistant that = (Assistant) o;
         return Objects.equals(id, that.id);
     }
 
