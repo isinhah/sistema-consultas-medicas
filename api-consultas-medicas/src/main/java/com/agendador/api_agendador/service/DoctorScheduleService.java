@@ -48,7 +48,7 @@ public class DoctorScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<DoctorScheduleResponseDTO> findAvailableBySpecialty(Long specialtyId, Pageable pageable) {
+    public Page<DoctorScheduleResponseDTO> findAvailableSchedulesBySpecialty(Long specialtyId, Pageable pageable) {
         Specification<DoctorSchedule> spec = DoctorScheduleSpecification.availableSchedulesBySpecialty(specialtyId);
         Page<DoctorSchedule> page = doctorScheduleRepository.findAll(spec, pageable);
         return page.map(DoctorScheduleMapper.INSTANCE::toDto);

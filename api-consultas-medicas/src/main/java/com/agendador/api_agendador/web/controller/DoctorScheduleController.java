@@ -25,6 +25,12 @@ public class DoctorScheduleController {
         this.doctorScheduleService = doctorScheduleService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DoctorScheduleResponseDTO> findById(@PathVariable Long id) {
+        DoctorScheduleResponseDTO dto = doctorScheduleService.findById(id);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<Page<DoctorScheduleResponseDTO>> searchSchedules(
             @RequestParam Long doctorId,
@@ -40,7 +46,7 @@ public class DoctorScheduleController {
     public ResponseEntity<Page<DoctorScheduleResponseDTO>> findSchedulesBySpecialty(
             @PathVariable Long specialtyId,
             Pageable pageable) {
-        Page<DoctorScheduleResponseDTO> page = doctorScheduleService.findAvailableBySpecialty(specialtyId, pageable);
+        Page<DoctorScheduleResponseDTO> page = doctorScheduleService.findAvailableSchedulesBySpecialty(specialtyId, pageable);
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
