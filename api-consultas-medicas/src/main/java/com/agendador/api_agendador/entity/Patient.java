@@ -36,6 +36,10 @@ public class Patient implements Serializable {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Appointment> appointments = new HashSet<>();
 
+    public Patient(Long patientId) {
+        this.id = patientId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
