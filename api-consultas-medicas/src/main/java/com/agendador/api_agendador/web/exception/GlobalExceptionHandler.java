@@ -18,6 +18,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<String> handleInvalidPassword(InvalidPasswordException ex) {
+        log.error("********** API ERROR **********", ex);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+    }
+
     @ExceptionHandler(MissingPathVariableException.class)
     public ResponseEntity<ErrorMessage> handleMissingPathVariable(MissingPathVariableException ex,
                                                                   HttpServletRequest request) {
