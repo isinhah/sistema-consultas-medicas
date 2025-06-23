@@ -37,7 +37,7 @@ public class Appointment implements Serializable {
     @ManyToOne(optional = false)
     private DoctorSchedule doctorSchedule;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private Patient patient;
 
     @Override

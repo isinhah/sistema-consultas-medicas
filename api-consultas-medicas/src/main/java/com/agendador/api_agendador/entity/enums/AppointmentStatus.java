@@ -1,9 +1,9 @@
 package com.agendador.api_agendador.entity.enums;
 
 public enum AppointmentStatus {
-    SCHEDULED,
+    AVAILABLE,
+    BOOKED,
     CHECKED_IN,
-    IN_PROGRESS,
     COMPLETED,
     CANCELED,
     ABSENT
