@@ -9,7 +9,6 @@ public record UserResponseDTO(
         Long id,
         String name,
         String email,
-        String password,
         String phone,
         LocalDate birthDate,
         String role,

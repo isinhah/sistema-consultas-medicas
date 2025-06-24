@@ -1,20 +1,22 @@
 package com.agendador.api_agendador.web.controller;
 
-import com.agendador.api_agendador.entity.Assistant;
 import com.agendador.api_agendador.entity.enums.AppointmentStatus;
-import com.agendador.api_agendador.repository.AssistantRepository;
+import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.AppointmentService;
+import com.agendador.api_agendador.service.UserService;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentBookDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentCreateSlotDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentResponseDTO;
-import com.agendador.api_agendador.web.exception.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,11 +25,11 @@ import java.util.UUID;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-    private final AssistantRepository assistantRepository;
+    private final UserService userService;
 
-    public AppointmentController(AppointmentService appointmentService, AssistantRepository assistantRepository) {
+    public AppointmentController(AppointmentService appointmentService, UserService userService) {
         this.appointmentService = appointmentService;
-        this.assistantRepository = assistantRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -36,6 +38,7 @@ public class AppointmentController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR')")
     @GetMapping
     public ResponseEntity<Page<AppointmentResponseDTO>> searchAppointments(
             @RequestParam(required = false) Long doctorId,
@@ -52,6 +55,7 @@ public class AppointmentController {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR', 'PATIENT')")
     @GetMapping("/specialties/{specialtyId}/available")
     public ResponseEntity<Page<AppointmentResponseDTO>> findAvailableBySpecialty(
             @PathVariable Long specialtyId,
@@ -61,17 +65,19 @@ public class AppointmentController {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ASSISTANT')")
     @PostMapping("/slots")
     public AppointmentResponseDTO createSlot(
             @RequestBody @Valid AppointmentCreateSlotDTO dto,
-            @RequestParam Long assistantId
+            Authentication authentication
     ) {
-        Assistant assistant = assistantRepository.findById(assistantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Assistant not found with id: " + assistantId));
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long assistantId = userDetails.getId();
 
-        return appointmentService.createSlot(dto, assistant);
+        return appointmentService.createSlot(dto, assistantId);
     }
 
+    @PreAuthorize("hasAnyRole('ASSISTANT', 'ADMIN')")
     @PatchMapping("/{id}/status")
     public ResponseEntity<AppointmentResponseDTO> updateStatus(
             @PathVariable UUID id,
@@ -81,15 +87,20 @@ public class AppointmentController {
         return new ResponseEntity<>(dto, HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('PATIENT')")
     @PostMapping("/{id}/book")
     public AppointmentResponseDTO bookAppointment(
             @PathVariable UUID id,
-            @RequestParam Long patientId
+            Authentication authentication
     ) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long patientId = userDetails.getId();
+
         AppointmentBookDTO dto = new AppointmentBookDTO(id);
         return appointmentService.bookAppointment(dto, patientId);
     }
 
+    @PreAuthorize("hasAnyRole('ASSISTANT', 'ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         appointmentService.delete(id);

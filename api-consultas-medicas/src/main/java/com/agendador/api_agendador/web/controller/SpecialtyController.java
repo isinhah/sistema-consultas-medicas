@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,24 +39,28 @@ public class SpecialtyController {
         return new ResponseEntity<>(dto,  HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @GetMapping("/by-doctor-id/{doctorId}")
     public ResponseEntity<Page<SpecialtyResponseDTO>> findByDoctorId(@PathVariable("doctorId") Long doctorId, Pageable pageable) {
         Page<SpecialtyResponseDTO> page = specialtyService.findByDoctorId(doctorId, pageable);
         return new ResponseEntity<>(page,  HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @GetMapping("/by-doctor-crm")
     public ResponseEntity<Page<SpecialtyResponseDTO>> findByDoctorCrm(@RequestParam String crm, Pageable pageable) {
         Page<SpecialtyResponseDTO> page = specialtyService.findByDoctorCrm(crm, pageable);
         return new ResponseEntity<>(page,  HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @PostMapping
     public ResponseEntity<SpecialtyResponseDTO> create(@Valid @RequestBody SpecialtyCreateDTO dto) {
         SpecialtyResponseDTO specialty = specialtyService.create(dto);
         return new ResponseEntity<>(specialty,  HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         specialtyService.delete(id);

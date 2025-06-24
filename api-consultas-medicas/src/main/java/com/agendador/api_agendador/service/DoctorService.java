@@ -60,9 +60,9 @@ public class DoctorService {
     }
 
     @Transactional
-    public DoctorResponseDTO create(DoctorCreateDTO dto) {
-        User existingUser = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + dto.userId()));
+    public DoctorResponseDTO create(DoctorCreateDTO dto, Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with id: " + userId));
 
         if (existingUser.getDoctor() != null || existingUser.getPatient() != null || existingUser.getAssistant() != null) {
             throw new ResourceAlreadyExistsException("User already has a profile assigned");

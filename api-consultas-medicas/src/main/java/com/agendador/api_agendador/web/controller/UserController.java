@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping(value = "/api/v1/users")
 public class UserController {
@@ -24,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == principal")
+    @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
         UserResponseDTO dto = userService.findById(id);
@@ -62,22 +60,21 @@ public class UserController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == principal")
+    @PreAuthorize("#id == principal.id or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
         UserResponseDTO user = userService.update(id, dto);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId == principal")
-    @PutMapping("/password")
+    @PreAuthorize("authentication.principal.id == #userId or hasRole('ADMIN')")
+    @PutMapping("/{userId}/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePassword(@RequestBody @Valid PasswordUpdateDTO dto, Principal principal) {
-        Long userId = userService.findByEmail(principal.getName()).getId();
+    public void updatePassword(@PathVariable Long userId, @RequestBody @Valid PasswordUpdateDTO dto) {
         userService.updatePassword(userId, dto);
     }
 
-    @PreAuthorize("#id == principal")
+    @PreAuthorize("#id == principal.id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

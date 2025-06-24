@@ -47,9 +47,16 @@ public class JwtTokenService {
         return Long.parseLong(decodedJWT.getSubject());
     }
 
+    public String getUserNameFromToken(String token) {
+        return getDecodedJWT(token).getClaim("name").asString();
+    }
+
+    public String getUserEmailFromToken(String token) {
+        return getDecodedJWT(token).getClaim("email").asString();
+    }
+
     public String getUserRoleFromToken(String token) {
-        DecodedJWT decodedJWT = getDecodedJWT(token);
-        return decodedJWT.getClaim("role").asString();
+        return getDecodedJWT(token).getClaim("role").asString();
     }
 
     private DecodedJWT getDecodedJWT(String token) {
@@ -59,6 +66,6 @@ public class JwtTokenService {
     public Instant generateExpirationDate() {
         return LocalDateTime.now()
                 .plusMinutes(30)
-                .toInstant(ZoneOffset.UTC);
+                .toInstant(ZoneOffset.of("-03:00"));
     }
 }

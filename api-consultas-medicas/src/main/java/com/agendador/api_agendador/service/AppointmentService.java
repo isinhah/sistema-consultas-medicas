@@ -7,7 +7,9 @@ import com.agendador.api_agendador.entity.Patient;
 import com.agendador.api_agendador.entity.enums.AppointmentStatus;
 import com.agendador.api_agendador.entity.enums.DayOfWeek;
 import com.agendador.api_agendador.repository.AppointmentRepository;
+import com.agendador.api_agendador.repository.AssistantRepository;
 import com.agendador.api_agendador.repository.DoctorScheduleRepository;
+import com.agendador.api_agendador.repository.PatientRepository;
 import com.agendador.api_agendador.specification.AppointmentSpecification;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentBookDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentCreateSlotDTO;
@@ -31,10 +33,14 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final DoctorScheduleRepository doctorScheduleRepository;
+    private final AssistantRepository assistantRepository;
+    private final PatientRepository patientRepository;
 
-    public AppointmentService(AppointmentRepository appointmentRepository, DoctorScheduleRepository doctorScheduleRepository) {
+    public AppointmentService(AppointmentRepository appointmentRepository, DoctorScheduleRepository doctorScheduleRepository, AssistantRepository assistantRepository, PatientRepository patientRepository) {
         this.appointmentRepository = appointmentRepository;
         this.doctorScheduleRepository = doctorScheduleRepository;
+        this.assistantRepository = assistantRepository;
+        this.patientRepository = patientRepository;
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +70,10 @@ public class AppointmentService {
     }
 
     @Transactional
-    public AppointmentResponseDTO createSlot(AppointmentCreateSlotDTO dto, Assistant assistant) {
+    public AppointmentResponseDTO createSlot(AppointmentCreateSlotDTO dto, Long assistantId) {
+        Assistant assistant = assistantRepository.findById(assistantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Assistant not found"));
+
         DoctorSchedule schedule = doctorScheduleRepository.findById(dto.doctorScheduleId())
                 .orElseThrow(() -> new ResourceNotFoundException("DoctorSchedule not found"));
 
@@ -116,7 +125,10 @@ public class AppointmentService {
             throw new BadRequestException("Cannot book an appointment in the past");
         }
 
-        appointment.setPatient(new Patient(patientId));
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with id: " + patientId));
+
+        appointment.setPatient(patient);
         appointment.setStatus(AppointmentStatus.BOOKED);
 
         appointmentRepository.save(appointment);

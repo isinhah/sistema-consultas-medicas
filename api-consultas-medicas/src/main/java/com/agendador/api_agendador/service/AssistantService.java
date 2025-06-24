@@ -53,9 +53,9 @@ public class AssistantService {
     }
 
     @Transactional
-    public AssistantResponseDTO create(AssistantCreateDTO dto) {
-        User existingUser = userRepository.findById(dto.userId())
-                .orElseThrow(() -> new ResourceNotFoundException("Assistant not found with id: " + dto.userId()));
+    public AssistantResponseDTO create(AssistantCreateDTO dto, Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
 
         if (existingUser.getDoctor() != null || existingUser.getPatient() != null || existingUser.getAssistant() != null) {
             throw new ResourceAlreadyExistsException("User already has a profile assigned");
@@ -65,14 +65,13 @@ public class AssistantService {
         }
 
         Assistant assistant = AssistantMapper.INSTANCE.toEntity(dto);
-
         assistant.setUser(existingUser);
 
         existingUser.setRole(Role.ASSISTANT);
 
         userRepository.save(existingUser);
-
         assistantRepository.save(assistant);
+
         return AssistantMapper.INSTANCE.toDto(assistant);
     }
 
