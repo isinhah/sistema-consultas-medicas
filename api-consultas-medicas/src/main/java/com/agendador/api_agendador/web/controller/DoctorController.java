@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.DoctorService;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.doctor.DoctorCreateDTO;
 import com.agendador.api_agendador.web.dto.doctor.DoctorResponseDTO;
 import com.agendador.api_agendador.web.dto.doctor.DoctorUpdateDTO;
@@ -33,14 +34,14 @@ public class DoctorController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @GetMapping
-    public ResponseEntity<Page<DoctorResponseDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<PageResponse<DoctorResponseDTO>> findAll(Pageable pageable) {
         Page<DoctorResponseDTO> page = doctorService.findAll(pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @GetMapping("/by-crm")
     public ResponseEntity<DoctorResponseDTO> findByCrm(@RequestParam String crm) {
         DoctorResponseDTO dto = doctorService.findByCrm(crm);

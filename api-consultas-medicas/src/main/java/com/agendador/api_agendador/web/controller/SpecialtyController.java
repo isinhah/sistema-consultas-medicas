@@ -1,6 +1,7 @@
 package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.service.SpecialtyService;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.specialty.SpecialtyCreateDTO;
 import com.agendador.api_agendador.web.dto.specialty.SpecialtyResponseDTO;
 import jakarta.validation.Valid;
@@ -28,9 +29,9 @@ public class SpecialtyController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<SpecialtyResponseDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<PageResponse<SpecialtyResponseDTO>> findAll(Pageable pageable) {
         Page<SpecialtyResponseDTO> page = specialtyService.findAll(pageable);
-        return new ResponseEntity<>(page,  HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @GetMapping("/search")
@@ -41,16 +42,16 @@ public class SpecialtyController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @GetMapping("/by-doctor-id/{doctorId}")
-    public ResponseEntity<Page<SpecialtyResponseDTO>> findByDoctorId(@PathVariable("doctorId") Long doctorId, Pageable pageable) {
+    public ResponseEntity<PageResponse<SpecialtyResponseDTO>> findByDoctorId(@PathVariable("doctorId") Long doctorId, Pageable pageable) {
         Page<SpecialtyResponseDTO> page = specialtyService.findByDoctorId(doctorId, pageable);
-        return new ResponseEntity<>(page,  HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
     @GetMapping("/by-doctor-crm")
-    public ResponseEntity<Page<SpecialtyResponseDTO>> findByDoctorCrm(@RequestParam String crm, Pageable pageable) {
+    public ResponseEntity<PageResponse<SpecialtyResponseDTO>> findByDoctorCrm(@RequestParam String crm, Pageable pageable) {
         Page<SpecialtyResponseDTO> page = specialtyService.findByDoctorCrm(crm, pageable);
-        return new ResponseEntity<>(page,  HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")

@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.entity.enums.DayOfWeek;
 import com.agendador.api_agendador.service.DoctorScheduleService;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleCreateDTO;
 import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleResponseDTO;
 import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleUpdateDTO;
@@ -34,22 +35,22 @@ public class DoctorScheduleController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<DoctorScheduleResponseDTO>> searchSchedules(
+    public ResponseEntity<PageResponse<DoctorScheduleResponseDTO>> searchSchedules(
             @RequestParam Long doctorId,
             @RequestParam(required = false) DayOfWeek dayOfWeek,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime,
             Pageable pageable) {
         Page<DoctorScheduleResponseDTO> page = doctorScheduleService.findSchedulesByDoctorId(doctorId, dayOfWeek, startTime, endTime, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @GetMapping("/specialty/{specialtyId}")
-    public ResponseEntity<Page<DoctorScheduleResponseDTO>> findSchedulesBySpecialty(
+    public ResponseEntity<PageResponse<DoctorScheduleResponseDTO>> findSchedulesBySpecialty(
             @PathVariable Long specialtyId,
             Pageable pageable) {
         Page<DoctorScheduleResponseDTO> page = doctorScheduleService.findAvailableSchedulesBySpecialty(specialtyId, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PostMapping

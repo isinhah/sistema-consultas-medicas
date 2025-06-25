@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.PatientService;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.patient.PatientCreateDTO;
 import com.agendador.api_agendador.web.dto.patient.PatientResponseDTO;
 import com.agendador.api_agendador.web.dto.patient.PatientUpdateDTO;
@@ -33,9 +34,9 @@ public class PatientController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR')")
     @GetMapping
-    public ResponseEntity<Page<PatientResponseDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<PageResponse<PatientResponseDTO>> findAll(Pageable pageable) {
         Page<PatientResponseDTO> page = patientService.findAll(pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR')")

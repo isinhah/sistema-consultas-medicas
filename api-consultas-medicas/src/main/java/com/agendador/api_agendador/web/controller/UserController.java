@@ -1,6 +1,7 @@
 package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.service.UserService;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.user.PasswordUpdateDTO;
 import com.agendador.api_agendador.web.dto.user.UserResponseDTO;
 import com.agendador.api_agendador.web.dto.user.UserUpdateDTO;
@@ -31,23 +32,23 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<Page<UserResponseDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<PageResponse<UserResponseDTO>> findAll(Pageable pageable) {
         Page<UserResponseDTO> page = userService.findAll(pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/search")
-    public ResponseEntity<Page<UserResponseDTO>> findByName(@RequestParam String name, Pageable pageable) {
+    public ResponseEntity<PageResponse<UserResponseDTO>> findByName(@RequestParam String name, Pageable pageable) {
         Page<UserResponseDTO> page = userService.findByName(name, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/role")
-    public ResponseEntity<Page<UserResponseDTO>> findByRole(@RequestParam String role, Pageable pageable) {
+    public ResponseEntity<PageResponse<UserResponseDTO>> findByRole(@RequestParam String role, Pageable pageable) {
         Page<UserResponseDTO> page = userService.findByRole(role, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

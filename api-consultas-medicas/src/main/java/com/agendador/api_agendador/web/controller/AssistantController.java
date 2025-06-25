@@ -5,6 +5,7 @@ import com.agendador.api_agendador.service.AssistantService;
 import com.agendador.api_agendador.web.dto.assistant.AssistantCreateDTO;
 import com.agendador.api_agendador.web.dto.assistant.AssistantResponseDTO;
 import com.agendador.api_agendador.web.dto.assistant.AssistantUpdateDTO;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,9 +34,9 @@ public class AssistantController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR')")
     @GetMapping
-    public ResponseEntity<Page<AssistantResponseDTO>> findAll(Pageable pageable) {
+    public ResponseEntity<PageResponse<AssistantResponseDTO>> findAll(Pageable pageable) {
         Page<AssistantResponseDTO> page = assistantService.findAll(pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR')")

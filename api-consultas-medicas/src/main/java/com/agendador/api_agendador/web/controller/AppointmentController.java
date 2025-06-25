@@ -3,10 +3,10 @@ package com.agendador.api_agendador.web.controller;
 import com.agendador.api_agendador.entity.enums.AppointmentStatus;
 import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.AppointmentService;
-import com.agendador.api_agendador.service.UserService;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentBookDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentCreateSlotDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentResponseDTO;
+import com.agendador.api_agendador.web.dto.common.PageResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,11 +24,9 @@ import java.util.UUID;
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
-    private final UserService userService;
 
-    public AppointmentController(AppointmentService appointmentService, UserService userService) {
+    public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
-        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -40,7 +37,7 @@ public class AppointmentController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR')")
     @GetMapping
-    public ResponseEntity<Page<AppointmentResponseDTO>> searchAppointments(
+    public ResponseEntity<PageResponse<AppointmentResponseDTO>> searchAppointments(
             @RequestParam(required = false) Long doctorId,
             @RequestParam(required = false) Long assistantId,
             @RequestParam(required = false) Long patientId,
@@ -52,20 +49,20 @@ public class AppointmentController {
         Page<AppointmentResponseDTO> page = appointmentService.findAppointmentsByFilters(
                 doctorId, assistantId, patientId, status, startDateTime, endDateTime, pageable
         );
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT', 'DOCTOR', 'PATIENT')")
     @GetMapping("/specialties/{specialtyId}/available")
-    public ResponseEntity<Page<AppointmentResponseDTO>> findAvailableBySpecialty(
+    public ResponseEntity<PageResponse<AppointmentResponseDTO>> findAvailableBySpecialty(
             @PathVariable Long specialtyId,
             Pageable pageable
     ) {
         Page<AppointmentResponseDTO> page = appointmentService.findAvailableAppointmentsBySpecialty(specialtyId, pageable);
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return ResponseEntity.ok(new PageResponse<>(page));
     }
 
-    @PreAuthorize("hasAnyRole('ASSISTANT')")
+    @PreAuthorize("hasRole('ASSISTANT')")
     @PostMapping("/slots")
     public AppointmentResponseDTO createSlot(
             @RequestBody @Valid AppointmentCreateSlotDTO dto,
