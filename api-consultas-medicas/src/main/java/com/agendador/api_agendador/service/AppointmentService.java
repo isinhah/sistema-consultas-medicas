@@ -6,6 +6,7 @@ import com.agendador.api_agendador.entity.DoctorSchedule;
 import com.agendador.api_agendador.entity.Patient;
 import com.agendador.api_agendador.entity.enums.AppointmentStatus;
 import com.agendador.api_agendador.entity.enums.DayOfWeek;
+import com.agendador.api_agendador.messaging.producer.AppointmentProducer;
 import com.agendador.api_agendador.repository.AppointmentRepository;
 import com.agendador.api_agendador.repository.AssistantRepository;
 import com.agendador.api_agendador.repository.DoctorScheduleRepository;
@@ -35,12 +36,14 @@ public class AppointmentService {
     private final DoctorScheduleRepository doctorScheduleRepository;
     private final AssistantRepository assistantRepository;
     private final PatientRepository patientRepository;
+    private final AppointmentProducer appointmentProducer;
 
-    public AppointmentService(AppointmentRepository appointmentRepository, DoctorScheduleRepository doctorScheduleRepository, AssistantRepository assistantRepository, PatientRepository patientRepository) {
+    public AppointmentService(AppointmentRepository appointmentRepository, DoctorScheduleRepository doctorScheduleRepository, AssistantRepository assistantRepository, PatientRepository patientRepository, AppointmentProducer appointmentProducer) {
         this.appointmentRepository = appointmentRepository;
         this.doctorScheduleRepository = doctorScheduleRepository;
         this.assistantRepository = assistantRepository;
         this.patientRepository = patientRepository;
+        this.appointmentProducer = appointmentProducer;
     }
 
     @Transactional(readOnly = true)
@@ -133,7 +136,10 @@ public class AppointmentService {
 
         appointmentRepository.save(appointment);
 
-        return AppointmentMapper.INSTANCE.toDto(appointment);
+        AppointmentResponseDTO response = AppointmentMapper.INSTANCE.toDto(appointment);
+        appointmentProducer.publishAppointmentEvent(response);
+
+        return response;
     }
 
     @Transactional

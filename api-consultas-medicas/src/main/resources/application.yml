@@ -7,14 +7,21 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+      defer-datasource-initialization: true
 
   web:
     resources:
       add-mappings: false
+
+  rabbitmq:
+    addresses: ${RABBITMQ_ADDRESSES}
+    queues:
+      appointment:
+        name: appointment.generate-pdf.queue
 
 api:
   security:

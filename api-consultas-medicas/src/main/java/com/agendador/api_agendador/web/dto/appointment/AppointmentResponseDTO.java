@@ -7,10 +7,8 @@ import java.util.UUID;
 
 public record AppointmentResponseDTO(
         UUID id,
-        Long doctorScheduleId,
         String patientName,
         String doctorName,
-        String assistantName,
         AppointmentStatus status,
         LocalDateTime dateTime
 ) {}

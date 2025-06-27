@@ -17,10 +17,8 @@ public interface AppointmentMapper {
     @Mapping(target = "status", ignore = true)
     Appointment toEntity(AppointmentCreateSlotDTO dto);
 
-    @Mapping(source = "doctorSchedule.id", target = "doctorScheduleId")
     @Mapping(source = "patient.user.name", target = "patientName")
     @Mapping(source = "doctorSchedule.doctor.user.name", target = "doctorName")
-    @Mapping(source = "assistant.user.name", target = "assistantName")
     AppointmentResponseDTO toDto(Appointment appointment);
 
     @BeanMapping(
