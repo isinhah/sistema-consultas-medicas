@@ -2,17 +2,17 @@ package com.isabel.api_comprovantes.messaging.listener;
 
 import com.isabel.api_comprovantes.messaging.dto.AppointmentDTO;
 import com.isabel.api_comprovantes.messaging.dto.AppointmentEvent;
-import com.isabel.api_comprovantes.service.PdfService;
+import com.isabel.api_comprovantes.service.DocumentService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AppointmentListener {
 
-    private final PdfService pdfService;
+    private final DocumentService documentService;
 
-    public AppointmentListener(PdfService pdfService) {
-        this.pdfService = pdfService;
+    public AppointmentListener(DocumentService documentService) {
+        this.documentService = documentService;
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.queues.appointment.name}")
@@ -26,12 +26,12 @@ public class AppointmentListener {
                     event.dateTime().split("T")[1]
             );
 
-            byte[] pdf = pdfService.generatePdf(dto).getBytes();
+            String pdfUrl = documentService.generateAndUploadPdf(dto);
 
-            System.out.println("PDF successfully generated for appointment: " + event.id());
+            System.out.println("PDF successfully generated for appointment: " + pdfUrl); // EXCLUIR DEPOIS
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println("Error while generating PDF for appointment: " + event.id());
+            e.printStackTrace();
         }
     }
 }
