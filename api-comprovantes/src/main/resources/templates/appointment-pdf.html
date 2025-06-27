@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Comprovante de Consulta</title>
+    <style>
+        @page {
+            size: 297mm 420mm;
+            margin: 20mm;
+        }
+
+        html, body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 12px;
+            color: #222222;
+            line-height: 1.4;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a1a1a;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 30px;
+            height: auto;
+            margin: 0 auto 5px auto;
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        td {
+            padding: 4px 6px;
+            vertical-align: top;
+        }
+
+        .label {
+            font-weight: bold;
+            width: 20%;
+            white-space: nowrap;
+        }
+
+        .value {
+            width: 80%;
+            padding-left: 4px;
+        }
+
+        .box {
+            padding: 12px 12px 70px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 10mm;
+            right: 10mm;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 11px;
+            color: #333;
+        }
+
+        .footer div:last-child {
+            margin-top: 6px;
+            font-style: italic;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="header">
+        <h1>COMPROVANTE DE CONSULTA</h1>
+    </div>
+
+    <table>
+        <tr>
+            <td class="label">PACIENTE:</td>
+            <td class="value" th:text="${patientName}"></td>
+        </tr>
+        <tr>
+            <td class="label">DOUTOR:</td>
+            <td class="value" th:text="${doctorName}"></td>
+        </tr>
+        <tr>
+            <td class="label">DATA:</td>
+            <td class="value" th:text="${date}"></td>
+        </tr>
+        <tr>
+            <td class="label">HORÁRIO:</td>
+            <td class="value" th:text="${time}"></td>
+        </tr>
+    </table>
+</div>
+
+<div class="footer">
+    <div><b>Data de emissão:</b> <span th:text="${issueDate}"></span></div>
+    <div><b>Apresente este comprovante no dia da consulta.</b></div>
+</div>
+</body>
+</html>
