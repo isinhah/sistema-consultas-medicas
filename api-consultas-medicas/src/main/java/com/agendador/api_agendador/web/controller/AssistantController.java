@@ -53,7 +53,7 @@ public class AssistantController {
             Authentication authentication
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Long userId = userDetails.id();
 
         AssistantResponseDTO assistant = assistantService.create(dto, userId);
 

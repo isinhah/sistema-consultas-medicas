@@ -15,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/api/v1/doctors")
 public class DoctorController {
@@ -55,7 +53,7 @@ public class DoctorController {
             Authentication authentication
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Long userId = userDetails.id();
 
         DoctorResponseDTO doctor = doctorService.create(dto, userId);
         return new ResponseEntity<>(doctor, HttpStatus.CREATED);

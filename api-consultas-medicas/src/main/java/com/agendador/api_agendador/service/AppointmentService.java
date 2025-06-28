@@ -94,6 +94,7 @@ public class AppointmentService {
 
         Appointment appointment = AppointmentMapper.INSTANCE.toEntity(dto);
         appointment.setAssistant(assistant);
+        appointment.setDoctorSchedule(schedule);
         appointment.setStatus(AppointmentStatus.AVAILABLE);
         appointment.setDateTime(dto.dateTime());
 

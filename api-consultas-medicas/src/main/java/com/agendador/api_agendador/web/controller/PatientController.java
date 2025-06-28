@@ -53,7 +53,7 @@ public class PatientController {
             Authentication authentication
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Long userId = userDetails.id();
 
         PatientResponseDTO patient = patientService.create(dto, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(patient);

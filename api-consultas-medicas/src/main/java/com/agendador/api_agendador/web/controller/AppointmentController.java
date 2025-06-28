@@ -69,7 +69,7 @@ public class AppointmentController {
             Authentication authentication
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long assistantId = userDetails.getId();
+        Long assistantId = userDetails.id();
 
         return appointmentService.createSlot(dto, assistantId);
     }
@@ -91,7 +91,7 @@ public class AppointmentController {
             Authentication authentication
     ) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long patientId = userDetails.getId();
+        Long patientId = userDetails.id();
 
         AppointmentBookDTO dto = new AppointmentBookDTO(id);
         return appointmentService.bookAppointment(dto, patientId);

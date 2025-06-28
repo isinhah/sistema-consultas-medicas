@@ -1,7 +1,8 @@
 package com.agendador.api_agendador.web.dto.appointment;
 
 import com.agendador.api_agendador.entity.Appointment;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -20,11 +21,4 @@ public interface AppointmentMapper {
     @Mapping(source = "patient.user.name", target = "patientName")
     @Mapping(source = "doctorSchedule.doctor.user.name", target = "doctorName")
     AppointmentResponseDTO toDto(Appointment appointment);
-
-    @BeanMapping(
-            nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-            unmappedTargetPolicy = ReportingPolicy.IGNORE
-    )
-    @Mapping(source = "status", target = "status")
-    void updateStatusFromDto(AppointmentUpdateStatusDTO dto, @MappingTarget Appointment appointment);
 }
