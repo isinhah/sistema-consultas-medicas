@@ -25,8 +25,6 @@ public class JwtTokenService {
     public String generateToken(User user) {
         return JWT.create()
                 .withSubject(user.getId().toString())
-                .withClaim("name", user.getName())
-                .withClaim("email", user.getEmail())
                 .withClaim("role", user.getRole().name())
                 .withIssuedAt(new Date())
                 .withExpiresAt(Date.from(generateExpirationDate()))
@@ -45,14 +43,6 @@ public class JwtTokenService {
     public Long getUserIdFromToken(String token) {
         DecodedJWT decodedJWT = getDecodedJWT(token);
         return Long.parseLong(decodedJWT.getSubject());
-    }
-
-    public String getUserNameFromToken(String token) {
-        return getDecodedJWT(token).getClaim("name").asString();
-    }
-
-    public String getUserEmailFromToken(String token) {
-        return getDecodedJWT(token).getClaim("email").asString();
     }
 
     public String getUserRoleFromToken(String token) {

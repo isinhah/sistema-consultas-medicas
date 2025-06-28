@@ -34,13 +34,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && tokenService.isTokenValid(token)) {
             Long userId = tokenService.getUserIdFromToken(token);
             String role = tokenService.getUserRoleFromToken(token).toUpperCase();
-            String name = tokenService.getUserNameFromToken(token);
-            String email = tokenService.getUserEmailFromToken(token);
 
             CustomUserDetails userDetails = new CustomUserDetails(
                     userId,
-                    name,
-                    email,
+                    null,
+                    null,
                     Role.valueOf(role)
             );
 

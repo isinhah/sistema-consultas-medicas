@@ -38,8 +38,6 @@ public class AuthenticationService {
 
         return new RegisterResponseDTO(
                 createdUser.getId(),
-                createdUser.getName(),
-                createdUser.getEmail(),
                 "Bearer",
                 token,
                 expiresAt
@@ -60,7 +58,6 @@ public class AuthenticationService {
                 user.getId(),
                 "Bearer",
                 token,
-                user.getName(),
                 user.getRole().name(),
                 expiresAt
         );
