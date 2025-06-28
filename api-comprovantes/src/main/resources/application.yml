@@ -20,6 +20,10 @@ spring:
     hibernate:
       ddl-auto: update
 
+  h2:
+    console:
+      enabled: true
+
   rabbitmq:
     addresses: ${RABBITMQ_ADDRESSES}
     queues:
