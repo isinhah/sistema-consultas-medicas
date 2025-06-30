@@ -1,5 +1,6 @@
 package com.agendador.api_agendador.web.dto.auth;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.Instant;
@@ -17,6 +18,7 @@ public record RegisterResponseDTO(
         String token,
 
         @Schema(description = "Token expiration timestamp")
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
         Instant expiresAt
 ) {
 }

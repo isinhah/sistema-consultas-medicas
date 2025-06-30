@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.AssistantService;
+import com.agendador.api_agendador.web.controller.documentation.AssistantControllerDocs;
 import com.agendador.api_agendador.web.dto.assistant.AssistantCreateDTO;
 import com.agendador.api_agendador.web.dto.assistant.AssistantResponseDTO;
 import com.agendador.api_agendador.web.dto.assistant.AssistantUpdateDTO;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/assistants")
-public class AssistantController {
+public class AssistantController implements AssistantControllerDocs {
 
     private final AssistantService assistantService;
 
