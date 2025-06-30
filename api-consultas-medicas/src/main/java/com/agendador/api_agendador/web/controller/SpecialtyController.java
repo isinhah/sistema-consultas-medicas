@@ -1,6 +1,7 @@
 package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.service.SpecialtyService;
+import com.agendador.api_agendador.web.controller.documentation.SpecialtyControllerDocs;
 import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.specialty.SpecialtyCreateDTO;
 import com.agendador.api_agendador.web.dto.specialty.SpecialtyResponseDTO;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/specialties")
-public class SpecialtyController {
+public class SpecialtyController implements SpecialtyControllerDocs {
 
     private final SpecialtyService specialtyService;
 
