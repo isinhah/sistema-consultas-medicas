@@ -8,6 +8,7 @@ import com.agendador.api_agendador.util.UserConstants;
 import com.agendador.api_agendador.web.dto.user.PasswordUpdateDTO;
 import com.agendador.api_agendador.web.dto.user.UserMapper;
 import com.agendador.api_agendador.web.dto.user.UserResponseDTO;
+import com.agendador.api_agendador.web.exception.BadRequestException;
 import com.agendador.api_agendador.web.exception.InvalidPasswordException;
 import com.agendador.api_agendador.web.exception.ResourceAlreadyExistsException;
 import com.agendador.api_agendador.web.exception.ResourceNotFoundException;
@@ -76,8 +77,8 @@ public class UserServiceTest {
     void findAll_ShouldReturnPageOfUserResponseDto_WhenSuccessful() {
         User user = UserMapper.INSTANCE.toEntity(USER_CREATE_DTO);
         user.setId(UserConstants.USER_ID);
-        PageRequest pageable = PageRequest.of(0, 10);
 
+        PageRequest pageable = PageRequest.of(0, 10);
         Page<User> userPage = new PageImpl<>(List.of(user), pageable, 1);
 
         when(userRepository.findAll(pageable)).thenReturn(userPage);
@@ -92,21 +93,109 @@ public class UserServiceTest {
     }
 
     @Test
+    void findByName_ShouldReturnPageOfUserResponseDTO_WhenSuccessful() {
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<User> userPage = new PageImpl<>(List.of(USER_ENTITY), pageable, 1);
+
+        when(userRepository.findByNameIgnoreCase(USER_NAME, pageable)).thenReturn(userPage);
+
+        Page<UserResponseDTO> result = userService.findByName(USER_NAME, pageable);
+
+        assertThat(result.getContent())
+                .hasSize(1)
+                .usingRecursiveFieldByFieldElementComparator()
+                .contains(USER_RESPONSE_DTO);
+
+        verify(userRepository).findByNameIgnoreCase(USER_NAME, pageable);
+    }
+
+    @Test
+    void findByName_ShouldThrowBadRequestException_WhenNameIsNull() {
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        assertThrows(BadRequestException.class, () -> userService.findByName(null, pageable));
+    }
+
+    @Test
+    void findByName_ShouldThrowBadRequestException_WhenNameIsBlank() {
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        assertThrows(BadRequestException.class, () -> userService.findByName("  ", pageable));
+    }
+
+    @Test
+    void findByRole_ShouldReturnPageOfUserResponseDTO_WhenSuccessful() {
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<User> userPage = new PageImpl<>(List.of(USER_ENTITY), pageable, 1);
+
+        when(userRepository.findByRole(USER_ROLE, pageable)).thenReturn(userPage);
+
+        Page<UserResponseDTO> result = userService.findByRole(USER_ROLE.name(), pageable);
+
+        assertThat(result.getContent())
+                .hasSize(1)
+                .usingRecursiveFieldByFieldElementComparator()
+                .contains(USER_RESPONSE_DTO);
+
+        verify(userRepository).findByRole(USER_ROLE, pageable);
+    }
+
+    @Test
+    void findByRole_ShouldThrowBadRequestException_WhenRoleIsNull() {
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        assertThrows(BadRequestException.class, () -> userService.findByRole(null, pageable));
+    }
+
+    @Test
+    void findByRole_ShouldThrowBadRequestException_WhenRoleIsBlank() {
+        PageRequest pageable = PageRequest.of(0, 10);
+
+        assertThrows(BadRequestException.class, () -> userService.findByRole("   ", pageable));
+    }
+
+    @Test
+    void findByEmailOrPhone_ShouldReturnUserResponseDTO_WhenSuccessful() {
+        when(userRepository.findByEmailOrPhone(USER_EMAIL, USER_PHONE))
+                .thenReturn(Optional.of(USER_ENTITY));
+
+        UserResponseDTO response = userService.findByEmailOrPhone(USER_EMAIL, USER_PHONE);
+
+        assertThat(response)
+                .usingRecursiveComparison()
+                .isEqualTo(USER_RESPONSE_DTO);
+
+        verify(userRepository).findByEmailOrPhone(USER_EMAIL, USER_PHONE);
+    }
+
+    @Test
+    void findByEmailOrPhone_ShouldThrowBadRequestException_WhenBothEmailAndPhoneAreEmpty() {
+        assertThrows(BadRequestException.class, () -> userService.findByEmailOrPhone("", ""));
+    }
+
+    @Test
+    void findByEmailOrPhone_ShouldThrowResourceNotFoundException_WhenUserNotFound() {
+        when(userRepository.findByEmailOrPhone(USER_EMAIL, USER_PHONE))
+                .thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> userService.findByEmailOrPhone(USER_EMAIL, USER_PHONE));
+    }
+
+    @Test
     void create_ShouldSaveAndReturnUser_WhenEmailOrPhoneNotExists() {
         User userToSave = UserMapper.INSTANCE.toEntity(USER_CREATE_DTO);
         userToSave.setRole(Role.USER);
-        String encodedPassword = "encoded_password";
-        userToSave.setPassword(encodedPassword);
+        userToSave.setPassword(USER_PASSWORD_ENCODED);
 
         when(userRepository.existsByEmailOrPhone(USER_CREATE_DTO.email(), USER_CREATE_DTO.phone())).thenReturn(false);
-        when(passwordEncoder.encode(USER_CREATE_DTO.password())).thenReturn(encodedPassword);
+        when(passwordEncoder.encode(USER_CREATE_DTO.password())).thenReturn(USER_PASSWORD_ENCODED);
         when(userRepository.save(any(User.class))).thenReturn(userToSave);
 
         User createdUser = userService.create(USER_CREATE_DTO);
 
         assertNotNull(createdUser);
         assertEquals(Role.USER, createdUser.getRole());
-        assertEquals(encodedPassword, createdUser.getPassword());
+        assertEquals(USER_PASSWORD_ENCODED, createdUser.getPassword());
 
         verify(userRepository).existsByEmailOrPhone(USER_CREATE_DTO.email(), USER_CREATE_DTO.phone());
         verify(passwordEncoder).encode(USER_CREATE_DTO.password());
