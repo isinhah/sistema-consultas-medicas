@@ -3,6 +3,7 @@ package com.agendador.api_agendador.service;
 import com.agendador.api_agendador.entity.User;
 import com.agendador.api_agendador.entity.enums.Role;
 import com.agendador.api_agendador.repository.UserRepository;
+import com.agendador.api_agendador.web.dto.auth.UserCreateDTO;
 import com.agendador.api_agendador.web.dto.user.*;
 import com.agendador.api_agendador.web.exception.BadRequestException;
 import com.agendador.api_agendador.web.exception.InvalidPasswordException;

@@ -1,4 +1,4 @@
-package com.agendador.api_agendador.web.dto.user;
+package com.agendador.api_agendador.web.dto.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

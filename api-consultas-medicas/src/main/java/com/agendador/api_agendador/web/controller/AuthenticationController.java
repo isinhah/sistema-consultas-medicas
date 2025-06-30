@@ -1,17 +1,18 @@
 package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.service.AuthenticationService;
-import com.agendador.api_agendador.web.dto.authentication.LoginRequestDTO;
-import com.agendador.api_agendador.web.dto.authentication.LoginResponseDTO;
-import com.agendador.api_agendador.web.dto.authentication.RegisterResponseDTO;
-import com.agendador.api_agendador.web.dto.user.UserCreateDTO;
+import com.agendador.api_agendador.web.controller.documentation.AuthenticationControllerDocs;
+import com.agendador.api_agendador.web.dto.auth.LoginRequestDTO;
+import com.agendador.api_agendador.web.dto.auth.LoginResponseDTO;
+import com.agendador.api_agendador.web.dto.auth.RegisterResponseDTO;
+import com.agendador.api_agendador.web.dto.auth.UserCreateDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-public class AuthenticationController {
+public class AuthenticationController implements AuthenticationControllerDocs {
 
     private final AuthenticationService authenticationService;
 

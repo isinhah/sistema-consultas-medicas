@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.dto.user;
 
 import com.agendador.api_agendador.entity.User;
 import com.agendador.api_agendador.entity.enums.Role;
+import com.agendador.api_agendador.web.dto.auth.UserCreateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
