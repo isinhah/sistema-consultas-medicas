@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.entity.enums.DayOfWeek;
 import com.agendador.api_agendador.service.DoctorScheduleService;
+import com.agendador.api_agendador.web.controller.documentation.DoctorScheduleControllerDocs;
 import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleCreateDTO;
 import com.agendador.api_agendador.web.dto.doctor_schedule.DoctorScheduleResponseDTO;
@@ -20,7 +21,7 @@ import java.time.LocalTime;
 @PreAuthorize("hasAnyRole('ADMIN', 'ASSISTANT')")
 @RestController
 @RequestMapping("/api/v1/doctor-schedules")
-public class DoctorScheduleController {
+public class DoctorScheduleController implements DoctorScheduleControllerDocs {
 
     private final DoctorScheduleService doctorScheduleService;
 
