@@ -1,6 +1,7 @@
 package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.service.UserService;
+import com.agendador.api_agendador.web.controller.documentation.UserControllerDocs;
 import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.user.PasswordUpdateDTO;
 import com.agendador.api_agendador.web.dto.user.UserResponseDTO;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
-public class UserController {
+public class UserController implements UserControllerDocs {
 
     private final UserService userService;
 
