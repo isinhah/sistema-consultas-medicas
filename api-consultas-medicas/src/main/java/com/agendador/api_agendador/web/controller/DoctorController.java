@@ -2,6 +2,7 @@ package com.agendador.api_agendador.web.controller;
 
 import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.DoctorService;
+import com.agendador.api_agendador.web.controller.documentation.DoctorControllerDocs;
 import com.agendador.api_agendador.web.dto.common.PageResponse;
 import com.agendador.api_agendador.web.dto.doctor.DoctorCreateDTO;
 import com.agendador.api_agendador.web.dto.doctor.DoctorResponseDTO;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/doctors")
-public class DoctorController {
+public class DoctorController implements DoctorControllerDocs {
 
     private final DoctorService doctorService;
 
