@@ -34,6 +34,5 @@ public record UserResponseDTO(
         @Schema(description = "Timestamp when the user was last updated", example = "21/07/2023 09:12:05")
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime updatedAt
-
 ) {
 }

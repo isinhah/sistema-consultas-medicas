@@ -3,6 +3,7 @@ package com.agendador.api_agendador.web.controller;
 import com.agendador.api_agendador.entity.enums.AppointmentStatus;
 import com.agendador.api_agendador.security.CustomUserDetails;
 import com.agendador.api_agendador.service.AppointmentService;
+import com.agendador.api_agendador.web.controller.documentation.AppointmentControllerDocs;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentBookDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentCreateSlotDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentResponseDTO;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/appointments")
-public class AppointmentController {
+public class AppointmentController implements AppointmentControllerDocs {
 
     private final AppointmentService appointmentService;
 

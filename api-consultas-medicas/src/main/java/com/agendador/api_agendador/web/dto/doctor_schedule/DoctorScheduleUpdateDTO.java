@@ -9,15 +9,24 @@ import java.time.LocalTime;
 @Schema(description = "Data to update a doctor's schedule")
 public record DoctorScheduleUpdateDTO(
 
-        @Schema(description = "Day of the week", example = "TUESDAY")
+        @Schema(
+                description = "Day of the week",
+                example = "TUESDAY"
+        )
         @NotNull(message = "Day of week must be provided")
         DayOfWeek dayOfWeek,
 
-        @Schema(description = "Start time", example = "14:00")
+        @Schema(
+                description = "Start time",
+                example = "14:00"
+        )
         @NotNull(message = "Start time must be provided")
         LocalTime startTime,
 
-        @Schema(description = "End time", example = "18:00")
+        @Schema(
+                description = "End time",
+                example = "18:00"
+        )
         @NotNull(message = "End time must be provided")
         LocalTime endTime
 ) {}
