@@ -1,5 +1,6 @@
 package com.agendador.api_agendador.service;
 
+import com.agendador.api_agendador.entity.User;
 import com.agendador.api_agendador.entity.enums.Role;
 import com.agendador.api_agendador.repository.UserRepository;
 import com.agendador.api_agendador.security.JwtTokenService;
@@ -13,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.agendador.api_agendador.util.AuthConstants.*;
-import static com.agendador.api_agendador.util.UserConstants.USER_ENTITY;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -37,76 +37,86 @@ public class AuthServiceTest {
 
     @Test
     void register_ShouldReturnRegisterResponseDTO_WhenSuccessful() {
-        when(userService.create(USER_CREATE_DTO)).thenReturn(USER_ENTITY);
-        when(tokenService.generateToken(USER_ENTITY)).thenReturn(TOKEN);
+        User user = freshUserEntity();
+
+        when(userService.create(USER_CREATE_DTO)).thenReturn(user);
+        when(tokenService.generateToken(user)).thenReturn(TOKEN);
         when(tokenService.generateExpirationDate()).thenReturn(EXPIRES_AT);
 
         RegisterResponseDTO response = authenticationService.register(USER_CREATE_DTO);
 
         assertNotNull(response);
-        assertEquals(USER_ENTITY.getId(), response.userId());
-        assertEquals("Bearer", response.tokenType());
+        assertEquals(user.getId(), response.userId());
+        assertEquals(TOKEN_TYPE, response.tokenType());
         assertEquals(TOKEN, response.token());
         assertEquals(EXPIRES_AT, response.expiresAt());
 
         verify(userService).create(USER_CREATE_DTO);
-        verify(tokenService).generateToken(USER_ENTITY);
+        verify(tokenService).generateToken(user);
         verify(tokenService).generateExpirationDate();
     }
 
     @Test
     void login_ShouldReturnLoginResponseDTO_WhenCredentialsAreValid() {
-        when(userService.findByEmail(LOGIN_REQUEST_DTO.email())).thenReturn(USER_ENTITY);
-        when(passwordEncoder.matches(LOGIN_REQUEST_DTO.password(), USER_ENTITY.getPassword())).thenReturn(true);
-        when(tokenService.generateToken(USER_ENTITY)).thenReturn(TOKEN);
+        User user = freshUserEntity();
+
+        when(userService.findByEmail(LOGIN_REQUEST_DTO.email())).thenReturn(user);
+        when(passwordEncoder.matches(LOGIN_REQUEST_DTO.password(), user.getPassword())).thenReturn(true);
+        when(tokenService.generateToken(user)).thenReturn(TOKEN);
         when(tokenService.generateExpirationDate()).thenReturn(EXPIRES_AT);
 
         var response = authenticationService.login(LOGIN_REQUEST_DTO);
 
         assertNotNull(response);
-        assertEquals(USER_ENTITY.getId(), response.userId());
-        assertEquals("Bearer", response.tokenType());
+        assertEquals(user.getId(), response.userId());
+        assertEquals(TOKEN_TYPE, response.tokenType());
         assertEquals(TOKEN, response.token());
-        assertEquals(USER_ENTITY.getRole().name(), response.role());
+        assertEquals(user.getRole().name(), response.role());
         assertEquals(EXPIRES_AT, response.expiresAt());
 
         verify(userService).findByEmail(LOGIN_REQUEST_DTO.email());
-        verify(passwordEncoder).matches(LOGIN_REQUEST_DTO.password(), USER_ENTITY.getPassword());
-        verify(tokenService).generateToken(USER_ENTITY);
+        verify(passwordEncoder).matches(LOGIN_REQUEST_DTO.password(), user.getPassword());
+        verify(tokenService).generateToken(user);
     }
 
     @Test
     void login_ShouldThrowInvalidPasswordException_WhenPasswordDoesNotMatch() {
-        when(userService.findByEmail(LOGIN_REQUEST_DTO.email())).thenReturn(USER_ENTITY);
-        when(passwordEncoder.matches(LOGIN_REQUEST_DTO.password(), USER_ENTITY.getPassword())).thenReturn(false);
+        User user = freshUserEntity();
+
+        when(userService.findByEmail(LOGIN_REQUEST_DTO.email())).thenReturn(user);
+        when(passwordEncoder.matches(LOGIN_REQUEST_DTO.password(), user.getPassword())).thenReturn(false);
 
         assertThrows(InvalidPasswordException.class, () -> authenticationService.login(LOGIN_REQUEST_DTO));
 
         verify(userService).findByEmail(LOGIN_REQUEST_DTO.email());
-        verify(passwordEncoder).matches(LOGIN_REQUEST_DTO.password(), USER_ENTITY.getPassword());
+        verify(passwordEncoder).matches(LOGIN_REQUEST_DTO.password(), user.getPassword());
         verify(tokenService, never()).generateToken(any());
     }
 
     @Test
     void promoteToAdmin_ShouldUpdateUserRole_WhenNotAdmin() {
-        USER_ENTITY.setRole(Role.USER);
+        User user = freshUserEntity();
+        user.setRole(Role.USER);
 
-        when(userService.findEntityById(USER_ID)).thenReturn(USER_ENTITY);
+        when(userService.findEntityById(USER_ID)).thenReturn(user);
 
         authenticationService.promoteToAdmin(USER_ID);
 
-        assertEquals(Role.ADMIN, USER_ENTITY.getRole());
+        assertEquals(Role.ADMIN, user.getRole());
         verify(userService).findEntityById(USER_ID);
-        verify(userRepository).save(USER_ENTITY);
+        verify(userRepository).save(user);
     }
 
     @Test
     void promoteToAdmin_ShouldDoNothing_WhenUserIsAlreadyAdmin() {
-        when(userService.findEntityById(USER_ID)).thenReturn(USER_ENTITY);
+        User user = freshUserEntity();
+        user.setRole(Role.ADMIN);
+
+        when(userService.findEntityById(USER_ID)).thenReturn(user);
 
         authenticationService.promoteToAdmin(USER_ID);
 
-        assertEquals(Role.ADMIN, USER_ENTITY.getRole());
+        assertEquals(Role.ADMIN, user.getRole());
         verify(userService).findEntityById(USER_ID);
         verify(userRepository, never()).save(any());
     }
