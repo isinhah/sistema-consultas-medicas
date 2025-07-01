@@ -6,7 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class SecurityContextTestUtil {
+public final class SecurityContextTestUtil {
 
     public static void mockAuthenticatedUser(Long userId, String email, Role role) {
         CustomUserDetails principal = new CustomUserDetails(
