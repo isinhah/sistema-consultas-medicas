@@ -82,7 +82,7 @@ public class AppointmentController implements AppointmentControllerDocs {
             @RequestParam AppointmentStatus status
     ) {
         AppointmentResponseDTO dto = appointmentService.updateStatus(id, status);
-        return new ResponseEntity<>(dto, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('PATIENT')")
