@@ -23,7 +23,6 @@ public interface DoctorScheduleMapper {
     DoctorSchedule toEntity(DoctorScheduleCreateDTO dto);
 
     @Mapping(target = "doctorName", source = "doctor.user.name")
-    @Mapping(target = "appointmentIds", source = "appointments", qualifiedByName = "appointmentsToIds")
     DoctorScheduleResponseDTO toDto(DoctorSchedule doctorSchedule);
 
     @Mapping(target = "id", ignore = true)

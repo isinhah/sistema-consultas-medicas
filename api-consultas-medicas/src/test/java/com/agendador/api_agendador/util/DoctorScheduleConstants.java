@@ -26,11 +26,6 @@ public final class DoctorScheduleConstants {
     public static final LocalTime START_TIME_UPDATE = LocalTime.of(14, 0);
     public static final LocalTime END_TIME_UPDATE = LocalTime.of(18, 0);
 
-    public static final java.util.Set<java.util.UUID> APPOINTMENT_IDS = java.util.Set.of(
-            java.util.UUID.fromString("11111111-1111-1111-1111-111111111111"),
-            java.util.UUID.fromString("22222222-2222-2222-2222-222222222222")
-    );
-
     public static final DoctorScheduleCreateDTO DOCTOR_SCHEDULE_CREATE_DTO = new DoctorScheduleCreateDTO(
             DOCTOR_ID,
             DAY_OF_WEEK_CREATE,
@@ -49,8 +44,7 @@ public final class DoctorScheduleConstants {
             DOCTOR_NAME,
             DAY_OF_WEEK_CREATE,
             START_TIME_CREATE,
-            END_TIME_CREATE,
-            APPOINTMENT_IDS
+            END_TIME_CREATE
     );
 
     public static DoctorSchedule freshDoctorScheduleEntity() {

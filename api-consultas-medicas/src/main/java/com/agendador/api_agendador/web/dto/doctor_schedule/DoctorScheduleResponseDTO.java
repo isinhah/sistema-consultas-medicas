@@ -4,8 +4,6 @@ import com.agendador.api_agendador.entity.enums.DayOfWeek;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalTime;
-import java.util.Set;
-import java.util.UUID;
 
 @Schema(description = "Data returned for a doctor's schedule")
 public record DoctorScheduleResponseDTO(
@@ -23,8 +21,5 @@ public record DoctorScheduleResponseDTO(
         LocalTime startTime,
 
         @Schema(description = "End time", example = "12:00")
-        LocalTime endTime,
-
-        @Schema(description = "Appointment IDs")
-        Set<UUID> appointmentIds
+        LocalTime endTime
 ) {}
