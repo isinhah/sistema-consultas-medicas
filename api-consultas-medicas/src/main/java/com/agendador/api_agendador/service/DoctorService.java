@@ -109,7 +109,7 @@ public class DoctorService {
         );
     }
 
-    private Set<Specialty> getSpecialties(Set<Long> specialtyIds) {
+    Set<Specialty> getSpecialties(Set<Long> specialtyIds) {
         return specialtyIds.stream()
                 .map(id -> specialtyRepository.findById(id)
                         .orElseThrow(() -> new ResourceNotFoundException("Specialty not found with id: " + id)))
