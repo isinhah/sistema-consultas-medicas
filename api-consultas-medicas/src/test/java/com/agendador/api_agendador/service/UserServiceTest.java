@@ -58,7 +58,8 @@ public class UserServiceTest {
 
     @Test
     void findById_ShouldReturnUserResponseDto_WhenSuccessful() {
-        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(USER_ENTITY));
+        User user = UserConstants.createUserEntity();
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
 
         UserResponseDTO response = userService.findById(USER_ID);
 
@@ -75,11 +76,8 @@ public class UserServiceTest {
 
     @Test
     void findAll_ShouldReturnPageOfUserResponseDto_WhenSuccessful() {
-        User user = UserMapper.INSTANCE.toEntity(USER_CREATE_DTO);
-        user.setId(UserConstants.USER_ID);
-
         PageRequest pageable = PageRequest.of(0, 10);
-        Page<User> userPage = new PageImpl<>(List.of(user), pageable, 1);
+        Page<User> userPage = new PageImpl<>(List.of(USER_ENTITY), pageable, 1);
 
         when(userRepository.findAll(pageable)).thenReturn(userPage);
 
@@ -87,7 +85,7 @@ public class UserServiceTest {
 
         assertThat(result.getContent())
                 .hasSize(1)
-                .contains(USER_RESPONSE_DTO_WITHOUT_METADATA);
+                .contains(USER_RESPONSE_DTO);
 
         verify(userRepository).findAll(pageable);
     }
@@ -95,9 +93,10 @@ public class UserServiceTest {
     @Test
     void findByName_ShouldReturnPageOfUserResponseDTO_WhenSuccessful() {
         PageRequest pageable = PageRequest.of(0, 10);
-        Page<User> userPage = new PageImpl<>(List.of(USER_ENTITY), pageable, 1);
+        User user = UserConstants.createUserEntity();
 
-        when(userRepository.findByNameIgnoreCase(USER_NAME, pageable)).thenReturn(userPage);
+        when(userRepository.findByNameIgnoreCase(USER_NAME, pageable))
+                .thenReturn(new PageImpl<>(List.of(user), pageable, 1));
 
         Page<UserResponseDTO> result = userService.findByName(USER_NAME, pageable);
 
@@ -219,12 +218,12 @@ public class UserServiceTest {
 
     @Test
     void update_ShouldReturnUserResponseDto_WhenSuccessful() {
-        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(USER_ENTITY));
+        User user = UserConstants.createUserEntity();
 
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
         when(userRepository.existsByEmailAndIdNot(USER_UPDATE_DTO.email(), USER_ID)).thenReturn(false);
         when(userRepository.existsByPhoneAndIdNot(USER_UPDATE_DTO.phone(), USER_ID)).thenReturn(false);
-
-        when(userRepository.save(any(User.class))).thenReturn(USER_ENTITY);
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         UserResponseDTO response = userService.update(USER_ID, USER_UPDATE_DTO);
 
@@ -253,7 +252,9 @@ public class UserServiceTest {
 
     @Test
     void update_ShouldThrowResourceAlreadyExistsException_WhenEmailAlreadyInUse() {
-        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(USER_ENTITY));
+        User user = UserConstants.createUserEntity();
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+
         when(userRepository.existsByEmailAndIdNot(USER_UPDATE_DTO.email(), USER_ID)).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> {
@@ -266,7 +267,9 @@ public class UserServiceTest {
 
     @Test
     void update_ShouldThrowResourceAlreadyExistsException_WhenPhoneAlreadyInUse() {
-        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(USER_ENTITY));
+        User user = UserConstants.createUserEntity();
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
+
         when(userRepository.existsByEmailAndIdNot(USER_UPDATE_DTO.email(), USER_ID)).thenReturn(false);
         when(userRepository.existsByPhoneAndIdNot(USER_UPDATE_DTO.phone(), USER_ID)).thenReturn(true);
 
@@ -286,7 +289,7 @@ public class UserServiceTest {
 
         when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(eq(dto.currentPassword()), anyString())).thenReturn(true);
-        when(passwordEncoder.encode(dto.newPassword())).thenReturn("encoded_new_password");
+        when(passwordEncoder.encode(dto.newPassword())).thenReturn(USER_PASSWORD_ENCODED);
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         userService.updatePassword(USER_ID, dto);
@@ -296,7 +299,6 @@ public class UserServiceTest {
         verify(passwordEncoder).encode(dto.newPassword());
         verify(userRepository).save(user);
     }
-
 
     @Test
     void updatePassword_ShouldThrowResourceNotFoundException_WhenUserNotFound() {
