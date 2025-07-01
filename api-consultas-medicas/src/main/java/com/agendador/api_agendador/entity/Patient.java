@@ -2,10 +2,7 @@ package com.agendador.api_agendador.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
