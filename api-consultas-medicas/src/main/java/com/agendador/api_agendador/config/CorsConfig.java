@@ -15,7 +15,10 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins(
+                                "http://localhost:8080",
+                                "https://sistema-consultas-medicas.onrender.com"
+                        )
                         .allowedMethods("*");
             }
         };
