@@ -36,9 +36,11 @@ public class Doctor implements Serializable {
             joinColumns = @JoinColumn(name = "doctor_id"),
             inverseJoinColumns = @JoinColumn(name = "specialty_id")
     )
+    @Builder.Default
     private Set<Specialty> specialties = new HashSet<>();
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<DoctorSchedule> schedules = new HashSet<>();
 
     @Override

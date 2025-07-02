@@ -6,7 +6,7 @@ api:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DATABASE_URL}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/consultas_medicas_db}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
 

@@ -29,6 +29,7 @@ public class Assistant implements Serializable {
     private String registrationNumber;
 
     @OneToMany(mappedBy = "assistant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     List<Appointment> confirmedAppointments = new ArrayList<>();
 
     @Override

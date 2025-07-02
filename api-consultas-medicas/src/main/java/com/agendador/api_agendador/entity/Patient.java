@@ -32,6 +32,7 @@ public class Patient implements Serializable {
     private String cpf;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<Appointment> appointments = new HashSet<>();
 
     public Patient(Long patientId) {
