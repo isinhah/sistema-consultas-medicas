@@ -1,7 +1,6 @@
 package com.agendador.api_agendador.web.controller.documentation;
 
 import com.agendador.api_agendador.entity.enums.AppointmentStatus;
-import com.agendador.api_agendador.web.dto.appointment.AppointmentBookDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentCreateSlotDTO;
 import com.agendador.api_agendador.web.dto.appointment.AppointmentResponseDTO;
 import com.agendador.api_agendador.web.dto.common.PageResponse;
@@ -27,7 +26,11 @@ public interface AppointmentControllerDocs {
     @GetMapping("/{id}")
     ResponseEntity<AppointmentResponseDTO> findById(@PathVariable UUID id);
 
-    @Operation(summary = "Search appointments by filters")
+    @Operation(summary = "Search appointments by filters", responses = {
+            @ApiResponse(responseCode = "200", description = "Appointments retrieved successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid query parameters"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping
     ResponseEntity<PageResponse<AppointmentResponseDTO>> searchAppointments(
             @RequestParam(required = false) Long doctorId,
@@ -39,35 +42,56 @@ public interface AppointmentControllerDocs {
             Pageable pageable
     );
 
-    @Operation(summary = "Find available appointments by specialty")
+    @Operation(summary = "Find available appointments by specialty", responses = {
+            @ApiResponse(responseCode = "200", description = "Available appointments found"),
+            @ApiResponse(responseCode = "404", description = "Specialty not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping("/specialties/{specialtyId}/available")
     ResponseEntity<PageResponse<AppointmentResponseDTO>> findAvailableBySpecialty(
             @PathVariable Long specialtyId,
             Pageable pageable
     );
 
-    @Operation(summary = "Create an available slot for appointment")
+    @Operation(summary = "Create an available slot for appointment", responses = {
+            @ApiResponse(responseCode = "201", description = "Slot created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PostMapping("/slots")
     AppointmentResponseDTO createSlot(
             @Valid @RequestBody AppointmentCreateSlotDTO dto,
             Authentication authentication
     );
 
-    @Operation(summary = "Update appointment status")
+    @Operation(summary = "Update appointment status", responses = {
+            @ApiResponse(responseCode = "200", description = "Appointment status updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid status or request"),
+            @ApiResponse(responseCode = "404", description = "Appointment not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PatchMapping("/{id}/status")
     ResponseEntity<AppointmentResponseDTO> updateStatus(
             @PathVariable UUID id,
             @RequestParam AppointmentStatus status
     );
 
-    @Operation(summary = "Book an appointment")
+    @Operation(summary = "Book an appointment", responses = {
+            @ApiResponse(responseCode = "200", description = "Appointment booked successfully"),
+            @ApiResponse(responseCode = "404", description = "Appointment not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PostMapping("/{id}/book")
     AppointmentResponseDTO bookAppointment(
             @PathVariable UUID id,
             Authentication authentication
     );
 
-    @Operation(summary = "Delete an appointment")
+    @Operation(summary = "Delete an appointment", responses = {
+            @ApiResponse(responseCode = "204", description = "Appointment deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Appointment not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @DeleteMapping("/{id}")
     ResponseEntity<Void> delete(@PathVariable UUID id);
 }

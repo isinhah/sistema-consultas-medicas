@@ -18,27 +18,41 @@ public interface DoctorControllerDocs {
 
     @Operation(summary = "Find doctor by ID", responses = {
             @ApiResponse(responseCode = "200", description = "Doctor found"),
-            @ApiResponse(responseCode = "404", description = "Doctor not found")
+            @ApiResponse(responseCode = "404", description = "Doctor not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
     @GetMapping("/{id}")
     ResponseEntity<DoctorResponseDTO> findById(@PathVariable Long id);
 
-    @Operation(summary = "Find all doctors")
+    @Operation(summary = "Find all doctors", responses = {
+            @ApiResponse(responseCode = "200", description = "Doctors found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @GetMapping
     ResponseEntity<PageResponse<DoctorResponseDTO>> findAll(Pageable pageable);
 
     @Operation(summary = "Find doctor by CRM", responses = {
             @ApiResponse(responseCode = "200", description = "Doctor found"),
-            @ApiResponse(responseCode = "404", description = "Doctor not found")
+            @ApiResponse(responseCode = "404", description = "Doctor not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
     @GetMapping("/by-crm")
     ResponseEntity<DoctorResponseDTO> findByCrm(@RequestParam String crm);
 
-    @Operation(summary = "Create a new doctor")
+    @Operation(summary = "Create a new doctor", responses = {
+            @ApiResponse(responseCode = "201", description = "Doctor successfully created"),
+            @ApiResponse(responseCode = "400", description = "Invalid doctor data"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PostMapping
     ResponseEntity<DoctorResponseDTO> create(@Valid @RequestBody DoctorCreateDTO dto, Authentication authentication);
 
-    @Operation(summary = "Update doctor data")
+    @Operation(summary = "Update doctor data", responses = {
+            @ApiResponse(responseCode = "200", description = "Doctor successfully updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid update data"),
+            @ApiResponse(responseCode = "404", description = "Doctor not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
+    })
     @PatchMapping("/{id}")
     ResponseEntity<DoctorResponseDTO> update(@PathVariable Long id, @Valid @RequestBody DoctorUpdateDTO dto);
 }

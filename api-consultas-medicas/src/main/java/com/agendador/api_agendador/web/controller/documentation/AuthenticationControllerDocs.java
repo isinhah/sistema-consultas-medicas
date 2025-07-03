@@ -25,14 +25,16 @@ public interface AuthenticationControllerDocs {
 
     @Operation(summary = "User login", responses = {
             @ApiResponse(responseCode = "200", description = "Login successful"),
-            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+            @ApiResponse(responseCode = "401", description = "Invalid credentials"),
+            @ApiResponse(responseCode = "400", description = "Invalid login request data")
     })
     @PostMapping("/login")
     LoginResponseDTO login(@Valid @RequestBody LoginRequestDTO dto);
 
     @Operation(summary = "Promote user to admin", responses = {
             @ApiResponse(responseCode = "204", description = "User promoted to admin successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Access denied")
     })
     @PatchMapping("/promote-to-admin/{userId}")
     void promoteToAdmin(@PathVariable Long userId);
