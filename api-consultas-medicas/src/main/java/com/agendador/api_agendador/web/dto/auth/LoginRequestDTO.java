@@ -10,7 +10,7 @@ public record LoginRequestDTO(
 
         @Schema(
                 description = "User's email address",
-                example = "user@example.com"
+                example = "john.doe@example.com"
         )
         @NotBlank(message = "Email cannot be empty")
         @Email(message = "Email format is invalid", regexp = "^[a-z0-9.+-_]+@[a-z0-9.-]+\\.[a-z]{2,}$")

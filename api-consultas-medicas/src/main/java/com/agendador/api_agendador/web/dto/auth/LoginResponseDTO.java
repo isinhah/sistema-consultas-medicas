@@ -17,7 +17,7 @@ public record LoginResponseDTO(
         @Schema(description = "JWT token string")
         String token,
 
-        @Schema(description = "User role", example = "ADMIN")
+        @Schema(description = "User role", example = "USER")
         String role,
 
         @Schema(description = "Token expiration timestamp")
