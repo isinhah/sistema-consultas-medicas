@@ -8,6 +8,8 @@ Este projeto é composto por duas APIs integradas:
 
 **API de Documentos**: responsável por gerar um comprovante em PDF com os dados da consulta, armazenando esse arquivo no AWS S3 Bucket, permitindo que o usuário possa acessar o documento posteriormente.
 
+---
+
 ## ⚙️ Funcionalidades
 
 - **Autenticação e autorização**: controle de acesso via JWT para pacientes, assistentes, médicos e administradores.
@@ -15,6 +17,8 @@ Este projeto é composto por duas APIs integradas:
 - **Agendamento de consultas**: respeitando a disponibilidade dos horários dos médicos.
 - **Geração automática de documentos**: criação de comprovantes para os agendamentos realizados.
 - **Armazenamento e acesso aos comprovantes**: arquivos PDF armazenados e acessados via AWS S3.
+
+---
 
 ## 🛠️ Tecnologias
 
@@ -33,6 +37,8 @@ Este projeto é composto por duas APIs integradas:
 - **Utilitários**: Lombok, MapStruct
 - **Documentação da API**: SpringDoc OpenAPI
 
+---
+
 ## 📝 Endpoints
 
 - **Documentação online:**
@@ -40,12 +46,16 @@ Este projeto é composto por duas APIs integradas:
 - **Documentação local:**
   http://localhost:8080/swagger-ui/index.html
 
-## 📈 Diagrama de Classes
+---
+
+## 📈 Diagrama
 
 <details>
     <summary><b>Diagrama de Classes</b></summary>
     <img src="./assets/class-diagram.png" alt="Diagrama de Classes" height="600">
 </details>
+
+---
 
 ## 🗂️ Imagens do Projeto
 
@@ -73,13 +83,15 @@ Este projeto é composto por duas APIs integradas:
 
 <details>
   <summary><b>Comprovante da Consulta Marcada</b></summary>
-  <img src="./assets/booked-appointment.png" alt="Imagem do Comprovante" width="500">
+  <img src="./assets/booked-appointment.png" alt="Imagem do Comprovante" width="800">
 </details>
 
 <details>
   <summary><b>Listagem de Consultas Disponíveis por Especialidade Médica</b></summary>
   <img src="./assets/get-appointments-by-specialty.png" alt="Imagem da Listagem" width="500">
 </details>
+
+---
 
 ## ⚙️ Configuração e Execução
 
@@ -106,6 +118,8 @@ mvn spring-boot:run
 
 # Pressione (CTRL + C) para encerrar a aplicação
 ```
+
+---
 
 ## 🙋‍♀️ Autor
 
