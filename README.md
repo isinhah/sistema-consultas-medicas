@@ -1,4 +1,4 @@
-# 🏥 Sistema de Consultas Médicas
+# 🏥 Sistema de Agendamento de Consultas Médicas
 
 ## 📄 Descrição
 
@@ -110,4 +110,5 @@ mvn spring-boot:run
 ## 🙋‍♀️ Autor
 
 👩‍💻 Projeto desenvolvido por [Isabel Henrique](https://www.linkedin.com/in/isabel-henrique/)
+
 🤝 Fique à vontade para contribuir!
