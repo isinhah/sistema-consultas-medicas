@@ -4,7 +4,7 @@
 
 Este projeto é composto por duas APIs integradas:
 
-**API de Consultas Médicas**: responsável pelo agendamento de consultas médicas, registrando informações como paciente, assistente, médico, horários de atendimento e detalhes da consulta.
+**API de Consultas Médicas**: responsável pelo cadastro e gerenciamento de usuários (pacientes, assistentes e médicos), além do agendamento de consultas médicas.
 
 **API de Documentos**: responsável por gerar um comprovante em PDF com os dados da consulta, utilizando o Thymeleaf na criação do template, e armazenar o arquivo em um bucket S3 da AWS.
 
@@ -13,7 +13,6 @@ Este projeto é composto por duas APIs integradas:
 ## ⚙️ Funcionalidades
 
 - **Autenticação e autorização**: controle de acesso via JWT para pacientes, assistentes, médicos e administradores.
-- **Cadastro e gerenciamento de usuários**: inclui pacientes, assistentes e médicos.
 - **Agendamento de consultas**: respeitando a disponibilidade dos horários dos médicos.
 - **Geração automática de documentos**: criação de comprovantes para os agendamentos realizados.
 - **Armazenamento e acesso aos comprovantes**: arquivos PDF armazenados e acessados via AWS S3.
