@@ -4,9 +4,9 @@
 
 Este projeto é composto por duas APIs integradas:
 
-**API de Consultas Médicas**: uma API REST que permite o agendamento de consultas, registrando informações como paciente, assistente, médico, consulta e horários de atendimento.
+**API de Consultas Médicas**: responsável pelo agendamento de consultas médicas, registrando informações como paciente, assistente, médico, horários de atendimento e detalhes da consulta.
 
-**API de Documentos**: responsável por gerar um comprovante em PDF com os dados da consulta, armazenando esse arquivo no AWS S3 Bucket, permitindo que o usuário possa acessar o documento posteriormente.
+**API de Documentos**: responsável por gerar um comprovante em PDF com os dados da consulta, utilizando o Thymeleaf na criação do template, e armazenar o arquivo em um bucket S3 da AWS.
 
 ---
 
@@ -36,6 +36,17 @@ Este projeto é composto por duas APIs integradas:
 - **Testes**: JUnit, Mockito
 - **Utilitários**: Lombok, MapStruct
 - **Documentação da API**: SpringDoc OpenAPI
+
+---
+
+➡️ Fluxo da Aplicação:
+
+1. Um usuário genérico é cadastrado no sistema com a role USER e credenciais básicas.
+2. O tipo específico de usuário é criado, vinculado ao usuário genérico e incluindo suas informações específicas e role correspondente (paciente, médico, assistente ou administrador).
+3. O assistente cadastra o cronograma de disponibilidade do médico, informando os dias da semana e horários de início e fim.
+4. Com base nesse cronograma, o assistente cria uma consulta vinculando-a ao horário disponível.
+5. O paciente visualiza e agenda uma das consultas disponíveis.
+6. Após o agendamento, um comprovante em PDF é gerado utilizando o Thymeleaf, armazenado na AWS S3.
 
 ---
 
